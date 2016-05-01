@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title><%= appname %></title>
+    <link rel="stylesheet" href="<%= baseCSS %>" />
+    <link rel="import" href="<%= appComponent %>" />
+    <style>
+      core-app {
+        display:block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="messages" style="max-height:100px; overflow-x:hidden; overflow-y:scroll;"></div>
+    <core-app class="container-fluid">
+      <h1><%= appname %></h1>
+    </core-app>
+  </body>
+</html>

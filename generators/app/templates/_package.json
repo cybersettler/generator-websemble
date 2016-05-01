@@ -1,0 +1,16 @@
+{
+    "name": "<%= appname %>",
+    "version": "0.0.0",
+    "description": "<%= description %>",
+    "main": "app.js",
+    "scripts": {
+        "start": "./node_modules/.bin/electron ."
+    },
+    "dependencies": {
+      "electron-prebuilt": "0.37.x",
+      "lodash": "^4.6.1",
+      "shortid": "^2.2.2",
+      "tv4": "^1.1.12",
+      "websemble":"~0.2.0"
+    }
+}

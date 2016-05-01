@@ -1,0 +1,108 @@
+@import "variables.less";
+@import "mixins/opacity.less";
+@import "mixins/tab-focus.less";
+@import "mixins/vendor-prefixes.less";
+@import "mixins/buttons.less";
+@import "buttons.less";
+
+.btn-focus,
+.btn-hover{
+  color: @btn-default-color;
+  text-decoration: none;
+}
+
+.btn-active{
+  .tab-focus();
+  outline: 0;
+  background-image: none;
+  .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+}
+
+:host {
+  .btn;
+}
+:host( [disabled] ):extend( .btn[disabled] ){}
+:host( .disabled ):extend( .btn[disabled] ){}
+:host( :active ):extend( .btn:active ){}
+
+:host( .btn-default ) {
+  .btn-default;
+}
+:host( .btn-default:hover ):extend(.btn-default:hover) {}
+:host( .btn-default:focus ):extend(.btn-default:focus) {}
+:host( .btn-default:active ):extend(.btn-default:active) {}
+:host( .btn-default[disabled]:hover ):extend(.btn-default[disabled]:hover) {}
+:host( .btn-default.disabled:hover ):extend(.btn-default[disabled]:hover) {}
+
+:host( .btn-primary ) {
+  .btn-primary;
+}
+:host( .btn-primary:hover ):extend(.btn-primary:hover) {}
+:host( .btn-primary:focus ):extend(.btn-primary:focus) {}
+:host( .btn-primary:active ):extend(.btn-primary:active) {}
+:host( .btn-primary.disabled:hover ):extend( .btn-primary[disabled]:hover ){}
+:host( .btn-primary[disabled]:hover ):extend( .btn-primary[disabled]:hover ){}
+
+:host( .btn-success ) {
+  .btn-success;
+}
+:host( .btn-success:hover ):extend(.btn-success:hover) {}
+:host( .btn-success:focus ):extend(.btn-success:focus) {}
+:host( .btn-success:active ):extend(.btn-success:active) {}
+:host( .btn-success[disabled]:hover ):extend(.btn-success[disabled]:hover) {}
+:host( .btn-success.disabled:hover ):extend(.btn-success[disabled]:hover) {}
+
+:host( .btn-info ) {
+  .btn-info;
+}
+:host( .btn-info:hover ):extend(.btn-info:hover) {}
+:host( .btn-info:focus ):extend(.btn-info:focus) {}
+:host( .btn-info:active ):extend(.btn-info:active) {}
+:host( .btn-info[disabled]:hover ):extend(.btn-info[disabled]:hover) {}
+:host( .btn-info.disabled:hover ):extend(.btn-info[disabled]:hover) {}
+
+:host( .btn-warning ) {
+  .btn-warning;
+}
+:host( .btn-warning:hover ):extend(.btn-warning:hover) {}
+:host( .btn-warning:focus ):extend(.btn-warning:focus) {}
+:host( .btn-warning:active ):extend(.btn-warning:active) {}
+:host( .btn-warning[disabled]:hover ):extend(.btn-warning[disabled]:hover) {}
+:host( .btn-warning.disabled:hover ):extend(.btn-warning[disabled]:hover) {}
+
+:host( .btn-danger ) {
+  .btn-danger;
+}
+:host( .btn-danger:hover ):extend(.btn-danger:hover) {}
+:host( .btn-danger:focus ):extend(.btn-danger:focus) {}
+:host( .btn-danger:active ):extend(.btn-danger:active) {}
+:host( .btn-danger[disabled]:hover ):extend(.btn-danger[disabled]:hover) {}
+:host( .btn-danger.disabled:hover ):extend(.btn-danger[disabled]:hover) {}
+
+:host( .btn-link ) {
+  .btn-link;
+}
+:host( .btn-link:hover ):extend(.btn-link:hover) {}
+:host( .btn-link:focus ):extend(.btn-link:focus) {}
+:host( .btn-link:active ):extend(.btn-link:active) {}
+:host( .btn-link[disabled] ):extend(.btn-link[disabled]) {}
+:host( .btn-link[disabled]:hover ):extend(.btn-link[disabled]:hover) {}
+:host( .btn-link.disabled:hover ):extend(.btn-link[disabled]:hover) {}
+
+:host( .btn-lg ) {
+  .btn-lg;
+}
+:host( .btn-sm ) {
+  .btn-sm;
+}
+:host( .btn-xs ) {
+  .btn-xs;
+}
+
+:host( .btn-block ) {
+  .btn-block;
+}
+
+:host( .btn-block + .btn-block ) {
+  margin-top: 5px;
+}
