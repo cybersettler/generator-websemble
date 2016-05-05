@@ -16,7 +16,7 @@ module.exports = yeoman.generators.Base.extend({
       args: [ 'ui-button' ]
     };
 
-    this.composeWith( 'matrix:component', config );
+    this.composeWith( 'websemble:component', config );
 
   }
 
