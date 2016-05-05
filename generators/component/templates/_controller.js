@@ -8,7 +8,7 @@ function <%= componentName %>Controller( view, model ){
 
   // This class extends component/view/AbstractController
   // so we need to call the super contructor
-  this.super( view );
+  this.super( view, model );
 
   // Fires when an instance was inserted into the document
   this.onAttached = function(){
