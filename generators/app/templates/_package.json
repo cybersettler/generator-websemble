@@ -11,6 +11,9 @@
       "lodash": "^4.6.1",
       "shortid": "^2.2.2",
       "tv4": "^1.1.12",
-      "websemble":"^0.3.0"
+      "websemble":"^0.5.0"
+    },
+    "devDependencies": {
+      "gulp": "^3.9.1"
     }
 }
