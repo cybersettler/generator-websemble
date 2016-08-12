@@ -7,14 +7,12 @@ var WriteService = require('./WriteService.js');
 
 module.exports = yeoman.Base.extend({
 
-  constructor: function () {
-
+  constructor: function() {
     yeoman.Base.apply(this, arguments);
     this.argument('bootstrapConfigFilePath', { type: String, required: false });
-
   },
 
-  prompting: function () {
+  prompting: function() {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -32,28 +30,24 @@ module.exports = yeoman.Base.extend({
       name    : 'description',
       message : 'Your project description'
     },{
-      type    : 'rawList',
+      type    : 'list',
       name    : 'styleFramework',
       message : 'CSS style framework:',
       choices : ["none","Bootstrap"],
-      default : 1
+      default : "Bootstrap"
     }];
 
-    this.prompt(prompts, function (props) {
+    this.prompt(prompts, function(props) {
       this.props = props;
       this.config.set( "appname", props.name );
       this.config.set( "description", props.description );
       this.config.set( "styleFramework", AppConfig.styleOptions[ props.styleFramework ] );
       this.config.set( "structure", AppConfig.structure );
-      // To access props later use this.props.someOption;
-
       done();
     }.bind(this));
-
   },
 
   appComponent: function(){
-
     this.log( chalk.blue("Copying app component") );
 
     var config = {
@@ -61,25 +55,17 @@ module.exports = yeoman.Base.extend({
     };
 
     this.composeWith( 'websemble:component', config );
-
   },
 
-  writing: function () {
-
+  writing: function() {
     console.log("App writing");
 
     var writer = new WriteService( this );
 
     writer.copyConfigurationFiles();
     writer.copyEntryPoint();
-  //  writer.copyComponentFiles();
-  //  writer.copyFrontendFactoryFiles();
-  //  writer.copyFrontendServiceFiles();
-  //  writer.copyFrontendUtilFiles();
-  //  writer.copyBackendUtilFiles();
-  //  writer.copyModelFiles();
 
-    if( 1 !== this.props.styleFramework ){
+    if( "Bootstrap" !== this.props.styleFramework ){
       this.log( chalk.gray( "Bootstrap not enabled" ) );
       return;
     }
@@ -89,7 +75,6 @@ module.exports = yeoman.Base.extend({
     writer.copyGlyphiconFiles();
     writer.generateVariablesLessFile();
     writer.copyLessFiles();
-
   },
 
   install: function () {

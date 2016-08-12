@@ -1,14 +1,16 @@
-var mainFolder = "src/main/";
-var testFolder = "src/test/";
-var frontendFolder = "frontend/";
-var backendFolder = "backend/";
+const mainFolder = "src/main/";
+const testFolder = "src/test/";
+const path = require('path');
+const frontendFolder = path.join(mainFolder,"frontend","/");
+const backendFolder = path.join(mainFolder,"backend","/");
 
 var AppConfig = {
   styleOptions: [ "none", "bootstrap" ],
   structure:{
+    webapp: path.join(mainFolder,"webapp","/"),
     backend:{
-      model: backendFolder + "model/",
-      view: backendFolder + "view/",
+      model: path.join(backendFolder, "model", "/"),
+      view: path.join(backendFolder, "view", "/"),
       controller: backendFolder + "controller/",
       util: backendFolder + "util/"
     },
