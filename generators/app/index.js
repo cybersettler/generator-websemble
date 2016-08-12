@@ -7,12 +7,12 @@ var WriteService = require('./WriteService.js');
 
 module.exports = yeoman.Base.extend({
 
-  constructor: function() {
+  constructor: function () {
     yeoman.Base.apply(this, arguments);
-    this.argument('bootstrapConfigFilePath', { type: String, required: false });
+    this.argument('bootstrapConfigFilePath', {type: String, required: false});
   },
 
-  prompting: function() {
+  prompting: function () {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -21,56 +21,56 @@ module.exports = yeoman.Base.extend({
     ));
 
     var prompts = [{
-      type    : 'input',
-      name    : 'name',
-      message : 'Your project name',
-      default : this.appname // Default to current folder name
-    },{
-      type    : 'input',
-      name    : 'description',
-      message : 'Your project description'
-    },{
-      type    : 'list',
-      name    : 'styleFramework',
-      message : 'CSS style framework:',
-      choices : ["none","Bootstrap"],
-      default : "Bootstrap"
+      type: 'input',
+      name: 'name',
+      message: 'Your project name',
+      default: this.appname // Default to current folder name
+    }, {
+      type: 'input',
+      name: 'description',
+      message: 'Your project description'
+    }, {
+      type: 'list',
+      name: 'styleFramework',
+      message: 'CSS style framework:',
+      choices: ["none", "Bootstrap"],
+      default: "Bootstrap"
     }];
 
-    this.prompt(prompts, function(props) {
+    this.prompt(prompts, function (props) {
       this.props = props;
-      this.config.set( "appname", props.name );
-      this.config.set( "description", props.description );
-      this.config.set( "styleFramework", AppConfig.styleOptions[ props.styleFramework ] );
-      this.config.set( "structure", AppConfig.structure );
+      this.config.set("appname", props.name);
+      this.config.set("description", props.description);
+      this.config.set("styleFramework", AppConfig.styleOptions[props.styleFramework]);
+      this.config.set("structure", AppConfig.structure);
       done();
     }.bind(this));
   },
 
-  appComponent: function(){
-    this.log( chalk.blue("Copying app component") );
+  appComponent: function () {
+    this.log(chalk.blue("Copying app component"));
 
     var config = {
-      args: [ 'core-app' ]
+      args: ['core-app']
     };
 
-    this.composeWith( 'websemble:component', config );
+    this.composeWith('websemble:component', config);
   },
 
-  writing: function() {
+  writing: function () {
     console.log("App writing");
 
-    var writer = new WriteService( this );
+    var writer = new WriteService(this);
 
     writer.copyConfigurationFiles();
     writer.copyEntryPoint();
 
-    if( "Bootstrap" !== this.props.styleFramework ){
-      this.log( chalk.gray( "Bootstrap not enabled" ) );
+    if (this.props.styleFramework !== "Bootstrap") {
+      this.log(chalk.gray("Bootstrap not enabled"));
       return;
     }
 
-    this.log( chalk.blue( "Bootstrap enabled" ) );
+    this.log(chalk.blue("Bootstrap enabled"));
 
     writer.copyGlyphiconFiles();
     writer.generateVariablesLessFile();

@@ -1,37 +1,8 @@
 var chalk = require('chalk');
 
-function WriteService( generator ) {
-
+function WriteService(generator) {
   var fs = generator.fs;
-  var structure = generator.config.get( "structure" );
-
-  var componentFiles = [];
-
-  var componentTypes = [
-    "core", "ui", "view"
-  ];
-/*
-  var frontendFactoryFiles = [
-    "ComponentFactory"
-  ];
-
-  var frontendServiceFiles = [
-    "AppComponentService", "BackendService",
-    "ComponentService", "CompositeApp", "Facade",
-    "UIComponentService", "ViewComponentService"
-  ];
-
-  var frontendUtilFiles = [
-    "ClassUtil", "Notifications", "StringUtil"
-  ];
-
-  var backendUtilFiles = [
-    "Storage", "UIRequest", "UIResponse", "UIRouter"
-  ];
-
-  var modelFiles = [
-    "dao", "Matcher"
-  ]; */
+  var structure = generator.config.get("structure");
 
   var mainLessFiles = [
     "alerts", "badges", "breadcrumbs", "button-groups", "buttons", "carousel",
@@ -55,9 +26,8 @@ function WriteService( generator ) {
     "eot", "svg", "ttf", "woff", "woff2"
   ];
 
-  this.copyConfigurationFiles = function(){
-
-    generator.log( chalk.blue("Copying frontend configuration files") );
+  this.copyConfigurationFiles = function () {
+    generator.log(chalk.blue("Copying frontend configuration files"));
 
     var config = {
       appname: generator.config.get("appname"),
@@ -66,23 +36,21 @@ function WriteService( generator ) {
 
     generator.log("app got config");
 
-    var template = generator.templatePath( structure.frontend.config + "_config.js" );
-    var destination = generator.destinationPath( structure.frontend.config + "config.js" );
+    var template = generator.templatePath(structure.frontend.config + "_config.js");
+    var destination = generator.destinationPath(structure.frontend.config + "config.js");
 
     generator.log("got template and destination");
 
-    fs.copyTpl( template, destination, config );
+    fs.copyTpl(template, destination, config);
     fs.copyTpl(
       generator.templatePath("_package.json"),
       generator.destinationPath("package.json"),
       config
     );
-
   };
 
-  this.copyEntryPoint = function(){
-
-    generator.log( chalk.blue("Copying entry point files") );
+  this.copyEntryPoint = function () {
+    generator.log(chalk.blue("Copying entry point files"));
 
     var cssFilePath = structure.frontend.assets + "css/base.css";
 
@@ -93,141 +61,87 @@ function WriteService( generator ) {
 
     fs.copyTpl(
       generator.templatePath("_index.html"),
-      generator.destinationPath("index.html"),{
+      generator.destinationPath("index.html"), {
         appname: generator.config.get("appname"),
         baseCSS: cssFilePath,
-        appComponent: structure.frontend.component + "core/App/" + "view.html"
+        appComponent: structure.frontend.component + "core/App/view.html"
       }
     );
-
-  };
-/*
-  this.copyComponentFiles = function(){
-
-    generator.log( chalk.blue("Copying component files") );
-    var filename = "AbstractController";
-    var path = '';
-
-    componentTypes.forEach( copyAbstractControllerFile );
-
-    function copyAbstractControllerFile( type ){
-      path = structure.frontend.component + type + '/';
-      copyStructureFile( filename, path );
-    }
-    // copyStructureFiles( componentFiles, structure.frontend.component );
-
   };
 
-  this.copyFrontendFactoryFiles = function(){
+  this.copyGlyphiconFiles = function () {
+    generator.log(chalk.blue("Copying icon files"));
+    var iconTemplatePath = generator.templatePath(structure.frontend.assets + "fonts/_glyphicons-halflings-regular.");
+    var iconDestinationPath = generator.destinationPath(structure.frontend.assets + "fonts/glyphicons-halflings-regular.");
 
-    generator.log( chalk.blue("Copying frontend factory files") );
-    copyStructureFiles( frontendFactoryFiles, structure.frontend.factory );
+    glyphiconsX.forEach(copyIconFile);
 
-  };
-
-  this.copyFrontendServiceFiles = function(){
-
-    generator.log( chalk.blue("Copying frontend service files") );
-    copyStructureFiles( frontendServiceFiles, structure.frontend.service );
-
-  };
-
-  this.copyFrontendUtilFiles = function(){
-
-    generator.log( chalk.blue("Copying frontend utilities files") );
-    copyStructureFiles( frontendUtilFiles, structure.frontend.util );
-
-  };
-
-  this.copyModelFiles = function(){
-
-    generator.log( chalk.blue("Copying model files") );
-    copyStructureFiles( modelFiles, structure.backend.model );
-
-  };
-
-  this.copyBackendUtilFiles = function(){
-
-    generator.log( chalk.blue("Copying backend utilities files") );
-    copyStructureFiles( backendUtilFiles, structure.backend.util );
-
-  }; */
-
-  this.copyGlyphiconFiles = function(){
-
-    generator.log( chalk.blue("Copying icon files") );
-    var iconTemplatePath = generator.templatePath( structure.frontend.assets + "fonts/_glyphicons-halflings-regular.");
-    var iconDestinationPath = generator.destinationPath( structure.frontend.assets + "fonts/glyphicons-halflings-regular.");
-
-    glyphiconsX.forEach( copyIconFile );
-
-    function copyIconFile( ext ){
+    function copyIconFile(ext) {
       var template = iconTemplatePath + ext;
       var destination = iconDestinationPath + ext;
-      generator.log( chalk.gray("Writing " + destination) );
-      fs.copy( template, destination )
+      generator.log(chalk.gray("Writing " + destination));
+      fs.copy(template, destination);
     }
-
   };
 
-  this.generateVariablesLessFile = function(){
+  this.generateVariablesLessFile = function () {
+    generator.log(chalk.blue("Copying less variables file"));
 
-    generator.log( chalk.blue("Copying less variables file") );
+    var filePath = generator.destinationPath(generator.bootstrapConfigFilePath);
+    var bootstrapConfig = fs.readJSON(filePath);
+    var variablesLessFileContent = generateVariablesLessFileContent(bootstrapConfig);
+    var templateFilePath = generator.templatePath(structure.src.main.less + "_variables.less");
+    var destinationFilePath = generator.destinationPath(structure.src.main.less + "variables.less");
 
-    var filePath = generator.destinationPath( generator.bootstrapConfigFilePath );
-    var bootstrapConfig = fs.readJSON( filePath );
-    var variablesLessFileContent = generateVariablesLessFileContent( bootstrapConfig );
-    var templateFilePath = generator.templatePath( structure.src.main.less + "_variables.less" );
-    var destinationFilePath = generator.destinationPath( structure.src.main.less + "variables.less" );
-
-    generator.log( chalk.gray( "Writing file " + destinationFilePath ) );
+    generator.log(chalk.gray("Writing file " + destinationFilePath));
 
     fs.copyTpl(
       templateFilePath,
       destinationFilePath,
-      { content: variablesLessFileContent }
+      {content: variablesLessFileContent}
     );
-
   };
 
-  this.copyLessFiles = function(){
+  this.copyLessFiles = function () {
+    generator.log(chalk.blue("Copying less files"));
 
-    generator.log( chalk.blue("Copying less files") );
-
-    copyStructureFiles( mainLessFiles, structure.src.main.less, "less" );
-    copyStructureFiles( mixinsLessFiles, structure.src.main.less + "mixins/", "less" );
-
+    copyStructureFiles(mainLessFiles, structure.src.main.less, "less");
+    copyStructureFiles(mixinsLessFiles, structure.src.main.less + "mixins/", "less");
   };
 
-  function copyStructureFiles( collection, path, ext ){
-    collection.forEach( copyFile );
-    function copyFile( name ){
-      copyStructureFile( name, path, ext );
+  function copyStructureFiles(collection, path, ext) {
+    collection.forEach(copyFile);
+    function copyFile(name) {
+      copyStructureFile(name, path, ext);
     }
   }
 
-  function copyStructureFile( name, path, ext ){
+  function copyStructureFile(name, path, ext) {
     ext = ext || "js";
     var filename = name + '.' + ext;
     var templateFile = '_' + filename;
     fs.copy(
-      generator.templatePath( path + templateFile ),
-      generator.destinationPath( path + filename )
+      generator.templatePath(path + templateFile),
+      generator.destinationPath(path + filename)
     );
   }
+}
 
-};
-
-function generateVariablesLessFileContent( bootstrapConfig ){
-  var key, value,line;
+function generateVariablesLessFileContent(bootstrapConfig) {
+  var key;
+  var value;
+  var line;
   var content = [];
-  for( key in bootstrapConfig.vars ){
-    value = bootstrapConfig.vars[ key ];
-    if( /["]/.test( value ) ){
-      value = value.replace( /"/g, '\"');
+  for (key in bootstrapConfig.vars) {
+    if (!bootstrapConfig.vars.hasOwnProperty(key)) {
+      continue;
+    }
+    value = bootstrapConfig.vars[key];
+    if (/["]/.test(value)) {
+      value = value.replace(/"/g, '\"');
     }
     line = key + ": " + value + ";";
-    content.push( line );
+    content.push(line);
   }
   return content.join("\n");
 }
