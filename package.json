@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^3.3.0",
+    "eslint-config-google": "^0.6.0",
     "eslint-config-xo-space": "^0.14.0",
     "gulp": "^3.9.0",
     "gulp-coveralls": "^0.1.0",
@@ -40,10 +41,9 @@
     "yeoman-test": "^1.4.0"
   },
   "eslintConfig": {
-    "extends": "xo-space",
+    "extends": "google",
     "env": {
-      "mocha": true,
-      "es6": true
+      "mocha": true
     }
   },
   "repository": "cybersettler/generator-websemble",
