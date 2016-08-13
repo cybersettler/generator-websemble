@@ -6,9 +6,5 @@ module.exports = yeoman.Base.extend({
   writing: function () {
     var writer = new WriteService(this);
     writer.renderBaseCSS();
-  },
-
-  install: function () {
-    this.installDependencies();
   }
 });

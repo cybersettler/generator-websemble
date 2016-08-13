@@ -1,4 +1,5 @@
-var chalk = require('chalk');
+const chalk = require('chalk');
+const path = require('path');
 
 function WriteService(generator) {
   var fs = generator.fs;
@@ -36,8 +37,8 @@ function WriteService(generator) {
 
     generator.log("app got config");
 
-    var template = generator.templatePath(structure.frontend.config + "_config.js");
-    var destination = generator.destinationPath(structure.frontend.config + "config.js");
+    var template = generator.templatePath(path.join(structure.frontend.config, "_config.js"));
+    var destination = generator.destinationPath(path.join(structure.frontend.config, "config.js"));
 
     generator.log("got template and destination");
 
@@ -47,26 +48,20 @@ function WriteService(generator) {
       generator.destinationPath("package.json"),
       config
     );
+
+    copyStructureFile("gulpfile", "");
+
+    fs.copyTpl(
+      generator.templatePath(path.join(structure.webapp, "_package.json")),
+      generator.destinationPath(path.join(structure.webapp, "package.json")),
+      config
+    );
   };
 
   this.copyEntryPoint = function () {
     generator.log(chalk.blue("Copying entry point files"));
-
-    var cssFilePath = structure.frontend.assets + "css/base.css";
-
-    fs.copy(
-      generator.templatePath("_app.js"),
-      generator.destinationPath("app.js")
-    );
-
-    fs.copyTpl(
-      generator.templatePath("_index.html"),
-      generator.destinationPath("index.html"), {
-        appname: generator.config.get("appname"),
-        baseCSS: cssFilePath,
-        appComponent: structure.frontend.component + "core/App/view.html"
-      }
-    );
+    copyStructureFile("app", structure.webapp);
+    copyStructureFile("index", structure.template, "html");
   };
 
   this.copyGlyphiconFiles = function () {
@@ -90,8 +85,8 @@ function WriteService(generator) {
     var filePath = generator.destinationPath(generator.bootstrapConfigFilePath);
     var bootstrapConfig = fs.readJSON(filePath);
     var variablesLessFileContent = generateVariablesLessFileContent(bootstrapConfig);
-    var templateFilePath = generator.templatePath(structure.src.main.less + "_variables.less");
-    var destinationFilePath = generator.destinationPath(structure.src.main.less + "variables.less");
+    var templateFilePath = generator.templatePath(structure.less + "_variables.less");
+    var destinationFilePath = generator.destinationPath(structure.less + "variables.less");
 
     generator.log(chalk.gray("Writing file " + destinationFilePath));
 
@@ -105,8 +100,8 @@ function WriteService(generator) {
   this.copyLessFiles = function () {
     generator.log(chalk.blue("Copying less files"));
 
-    copyStructureFiles(mainLessFiles, structure.src.main.less, "less");
-    copyStructureFiles(mixinsLessFiles, structure.src.main.less + "mixins/", "less");
+    copyStructureFiles(mainLessFiles, structure.less, "less");
+    copyStructureFiles(mixinsLessFiles, structure.less + "mixins/", "less");
   };
 
   function copyStructureFiles(collection, path, ext) {

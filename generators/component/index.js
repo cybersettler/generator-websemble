@@ -1,7 +1,6 @@
 'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var WriteService = require('./WriteService.js');
+const yeoman = require('yeoman-generator');
+const WriteService = require('./WriteService.js');
 
 module.exports = yeoman.Base.extend({
   constructor: function () {
@@ -16,27 +15,10 @@ module.exports = yeoman.Base.extend({
 
   writing: function () {
     this.log("Component writing");
-    var stylePath = this.options.style;
-    var htmlPath = this.options.html;
-    var shadowStylePath = this.options.shadowStyle;
-    var shadowHTMLPath = this.options.shadowHTML;
     var writer = new WriteService(this);
-    var log = this.log;
 
     writer.copyControllerFile(this.options.controller);
-    writer.compileCSS(stylePath).then(
-      function (output) {
-        var html = writer.readHTML(htmlPath);
-        writer.setMainTemplateConfig(output.css, html);
-        return writer.compileCSS(shadowStylePath);
-      }).then(
-        function (output) {
-          var html = writer.readHTML(shadowHTMLPath) || '<content></content>';
-          writer.setShadowTemplateConfig(output.css, html);
-          writer.copyViewFile();
-        }
-      ).catch(function (e) {
-        log(chalk.red(e.name + ': ' + e.message));
-      });
+    writer.copyViewFile();
+    writer.copyStyleFiles();
   }
 });

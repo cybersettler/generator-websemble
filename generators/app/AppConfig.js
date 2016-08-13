@@ -1,7 +1,7 @@
 const mainFolder = "src/main/";
 const testFolder = "src/test/";
 const path = require('path');
-const frontendFolder = path.join(mainFolder, "frontend", "/");
+const frontendFolder = path.join(mainFolder, "webapp/frontend", "/");
 const backendFolder = path.join(mainFolder, "backend", "/");
 
 var AppConfig = {
@@ -16,21 +16,16 @@ var AppConfig = {
     },
     frontend: {
       assets: frontendFolder + "assets/",
-      component: frontendFolder + "component/",
       controller: frontendFolder + "controller/",
       factory: frontendFolder + "factory/",
       service: frontendFolder + "service/",
       util: frontendFolder + "util/",
       config: frontendFolder + "config/"
     },
-    src: {
-      main: {
-        less: mainFolder + "less/"
-      },
-      test: {
-        jasmine: testFolder + "jasmine/"
-      }
-    }
+    less: path.join(mainFolder, "less", "/"),
+    template: path.join(mainFolder, "template", "/"),
+    jasmine: path.join(testFolder, "jasmine", "/"),
+    component: path.join(mainFolder, "component", "/")
   }
 };
 

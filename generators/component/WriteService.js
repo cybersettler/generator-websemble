@@ -1,6 +1,6 @@
-var less = require('less');
-var chalk = require('chalk');
-var _ = require('lodash');
+const chalk = require('chalk');
+const _ = require('lodash');
+const path = require('path');
 
 function WriteService(generator) {
   var fs = generator.fs;
@@ -19,7 +19,7 @@ function WriteService(generator) {
   });
 
   var namespace = match[1];
-  var componentPath = './' + structure.frontend.component + namespace + '/' + componentName + '/';
+  var componentPath = path.join(structure.component, namespace, '/', componentName, '/');
   var createFunction = 'createUIComponent';
 
   if (/^view-/.test(generator.componentTag)) {
@@ -28,30 +28,23 @@ function WriteService(generator) {
     createFunction = 'createAppComponent';
   }
 
+  var html = generator.options.html ? fs.read(generator.options.html) : "";
+  var shadowHTML = generator.options.shadowHTML ? fs.read(generator.options.shadowHTML) : "";
+
   var config = {
     componentTag: generator.componentTag,
     namespace: _.capitalize(namespace),
     componentName: componentName,
     Facade: "websemble",
-    createFunction: createFunction
-  };
-
-  this.setMainTemplateConfig = function (style, html) {
-    config.style = style;
-    config.html = html;
-  };
-
-  this.setShadowTemplateConfig = function (style, html) {
-    config.shadowStyle = style;
-    config.shadowHTML = html;
+    createFunction: createFunction,
+    html: html,
+    shadowHTML: shadowHTML
   };
 
   this.copyViewFile = function () {
-    generator.log(chalk.blue("Compiled CSS"));
-
     fs.copyTpl(
       generator.templatePath('_view.html'),
-      generator.destinationPath(componentPath + 'view.html'),
+      generator.destinationPath(path.join(componentPath, 'view.html')),
       config
     );
   };
@@ -62,34 +55,31 @@ function WriteService(generator) {
 
     fs.copyTpl(
       controllerFile,
-      generator.destinationPath(componentPath + 'controller.js'),
+      generator.destinationPath(path.join(componentPath, 'controller.js')),
       {componentName: componentName}
     );
   };
 
-  this.readHTML = function (path) {
-    if (!path) {
-      return '';
+  this.copyStyleFiles = function () {
+    if (generator.options.style) {
+      copyStyleFile(generator.options.style);
     }
-    return fs.read(path);
+    if (generator.options.shadowStyle) {
+      copyStyleFile(generator.options.shadowStyle);
+    }
   };
 
-  this.compileCSS = function (path) {
-    if (!path) {
-      return Promise.resolve('');
+  function copyStyleFile(stylePath) {
+    var matches = /_(\w+)[.](css|sass|less)$/.exec(stylePath);
+    if (matches.length < 2) {
+      return;
     }
-
-    generator.log(chalk.blue("Reading style file " + path));
-    var input = fs.read(path);
-
-    return less.render(
-      input, {
-        // Specify search paths for @import directives
-        paths: [
-          generator.destinationPath(structure.src.main.less),
-          generator.destinationPath(structure.src.main.less + "mixins")]
-      });
-  };
+    var basename = matches[1] + "." + matches[2];
+    fs.copy(
+      stylePath,
+      generator.destinationPath(path.join(componentPath, basename))
+    );
+  }
 }
 
 module.exports = WriteService;

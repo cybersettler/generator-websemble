@@ -10,7 +10,7 @@ function WriteService(generator) {
 
     less.render(
       input, {
-        paths: [generator.destinationPath(structure.src.main.less), generator.destinationPath(structure.src.main.less + "mixins")]  // Specify search paths for @import directives
+        paths: [generator.destinationPath(structure.less), generator.destinationPath(structure.less + "mixins")]  // Specify search paths for @import directives
       },
       function (e, output) {
         if (e) {

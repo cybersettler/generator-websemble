@@ -9,7 +9,8 @@ module.exports = yeoman.Base.extend({
     var config = {
       options: {
         controller: this.templatePath("_controller.js"),
-        shadowStyle: this.templatePath("_style.less")
+        shadowStyle: this.templatePath("_style.less"),
+        shadowHTML: this.templatePath("_shadowContent.html")
       },
       args: ['ui-button']
     };
