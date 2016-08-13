@@ -7,12 +7,12 @@ var WriteService = require('./WriteService.js');
 
 module.exports = yeoman.Base.extend({
 
-  constructor: function () {
+  constructor: function() {
     yeoman.Base.apply(this, arguments);
     this.argument('bootstrapConfigFilePath', {type: String, required: false});
   },
 
-  prompting: function () {
+  prompting: function() {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -37,7 +37,7 @@ module.exports = yeoman.Base.extend({
       default: 'Bootstrap'
     }];
 
-    this.prompt(prompts, function (props) {
+    this.prompt(prompts, function(props) {
       this.props = props;
       this.config.set('appname', props.name);
       this.config.set('description', props.description);
@@ -47,7 +47,7 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
-  appComponent: function () {
+  appComponent: function() {
     this.log(chalk.blue('Copying app component'));
 
     var config = {
@@ -57,7 +57,7 @@ module.exports = yeoman.Base.extend({
     this.composeWith('websemble:component', config);
   },
 
-  writing: function () {
+  writing: function() {
     console.log('App writing');
 
     var writer = new WriteService(this);
@@ -77,7 +77,7 @@ module.exports = yeoman.Base.extend({
     writer.copyLessFiles();
   },
 
-  install: function () {
+  install: function() {
     this.installDependencies();
   }
 });

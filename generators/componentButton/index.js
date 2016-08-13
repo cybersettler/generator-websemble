@@ -3,7 +3,7 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
 module.exports = yeoman.Base.extend({
-  configuration: function () {
+  configuration: function() {
     this.log(chalk.gray('Configuring button component.'));
 
     var config = {

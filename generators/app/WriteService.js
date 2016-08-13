@@ -27,7 +27,7 @@ function WriteService(generator) {
     'eot', 'svg', 'ttf', 'woff', 'woff2'
   ];
 
-  this.copyConfigurationFiles = function () {
+  this.copyConfigurationFiles = function() {
     generator.log(chalk.blue('Copying frontend configuration files'));
 
     var config = {
@@ -58,13 +58,13 @@ function WriteService(generator) {
     );
   };
 
-  this.copyEntryPoint = function () {
+  this.copyEntryPoint = function() {
     generator.log(chalk.blue('Copying entry point files'));
     copyStructureFile('app', structure.webapp);
     copyStructureFile('index', structure.template, 'html');
   };
 
-  this.copyGlyphiconFiles = function () {
+  this.copyGlyphiconFiles = function() {
     generator.log(chalk.blue('Copying icon files'));
     var iconTemplatePath = generator.templatePath(structure.frontend.assets + 'fonts/_glyphicons-halflings-regular.');
     var iconDestinationPath = generator.destinationPath(structure.frontend.assets + 'fonts/glyphicons-halflings-regular.');
@@ -79,7 +79,7 @@ function WriteService(generator) {
     }
   };
 
-  this.generateVariablesLessFile = function () {
+  this.generateVariablesLessFile = function() {
     generator.log(chalk.blue('Copying less variables file'));
 
     var filePath = generator.destinationPath(generator.bootstrapConfigFilePath);
@@ -97,7 +97,7 @@ function WriteService(generator) {
     );
   };
 
-  this.copyLessFiles = function () {
+  this.copyLessFiles = function() {
     generator.log(chalk.blue('Copying less files'));
 
     copyStructureFiles(mainLessFiles, structure.less, 'less');

@@ -8,8 +8,8 @@ var deps = [
 var bootstrapConfig = path.join(__dirname,
     'bootstrapConfig.json');
 
-describe('generator-websemble:app', function () {
-  before(function () {
+describe('generator-websemble:app', function() {
+  before(function() {
     return helpers.run(path.join(__dirname, '../generators/app'))
       .withArguments([bootstrapConfig])
       .withPrompts({name: 'testApp'})
@@ -17,7 +17,7 @@ describe('generator-websemble:app', function () {
       .toPromise();
   });
 
-  it('creates files', function () {
+  it('creates files', function() {
     assert.file([
       'package.json',
       'gulpfile.js'

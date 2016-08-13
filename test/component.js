@@ -11,9 +11,9 @@ var localConfig = {
   structure: AppConfig.structure
 };
 
-describe('generator-websemble:component', function () {
+describe('generator-websemble:component', function() {
   var sourcePath = path.join(__dirname, '../generators/componentButton/templates/');
-  before(function () {
+  before(function() {
     return helpers.run(path.join(__dirname, '../generators/component'))
       .withArguments(['ui-button'])
       .withOptions({
@@ -25,7 +25,7 @@ describe('generator-websemble:component', function () {
       .toPromise();
   });
 
-  it('creates files', function () {
+  it('creates files', function() {
     console.log('current dir', __dirname);
     assert.file([
       'src/main/component/ui/Button/controller.js',

@@ -14,7 +14,7 @@ function WriteService(generator) {
 
   generator.log(chalk.blue('Writing component ' + generator.componentTag));
   var match = /^(\w+)[-](.*)/.exec(generator.componentTag);
-  componentName = _.camelCase(match[2]).replace(/^(.)/, function (m, p) {
+  componentName = _.camelCase(match[2]).replace(/^(.)/, function(m, p) {
     return p.toUpperCase();
   });
 
@@ -41,7 +41,7 @@ function WriteService(generator) {
     shadowHTML: shadowHTML
   };
 
-  this.copyViewFile = function () {
+  this.copyViewFile = function() {
     fs.copyTpl(
       generator.templatePath('_view.html'),
       generator.destinationPath(path.join(componentPath, 'view.html')),
@@ -49,7 +49,7 @@ function WriteService(generator) {
     );
   };
 
-  this.copyControllerFile = function (customFile) {
+  this.copyControllerFile = function(customFile) {
     var controllerFile = customFile || generator.templatePath('_controller.txt');
     generator.log(chalk.blue('Copying controller file'));
 
@@ -60,7 +60,7 @@ function WriteService(generator) {
     );
   };
 
-  this.copyStyleFiles = function () {
+  this.copyStyleFiles = function() {
     if (generator.options.style) {
       copyStyleFile(generator.options.style);
     }

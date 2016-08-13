@@ -20,12 +20,12 @@ module.exports = {
       submenu: [
         {
           label: 'Open',
-          click: function () {
+          click: function() {
             console.log('Open file');
           }
         }, {
           label: 'Save',
-          click: function () {
+          click: function() {
             console.log('Save file');
           }
         }
@@ -34,13 +34,13 @@ module.exports = {
       label: 'View',
       submenu: [{
         label: 'Reload',
-        click: function () {
+        click: function() {
           console.log('Reload');
           ipc.send('reloadView', {viewId: 'index'});
         }
       }, {
         label: 'Toggle developer tools',
-        click: function () {
+        click: function() {
           ipc.send('toggleDevTools', {viewId: 'index'});
         }
       }]

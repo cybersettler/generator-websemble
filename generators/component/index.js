@@ -3,7 +3,7 @@ const yeoman = require('yeoman-generator');
 const WriteService = require('./WriteService.js');
 
 module.exports = yeoman.Base.extend({
-  constructor: function () {
+  constructor: function() {
     yeoman.Base.apply(this, arguments);
     this.argument('componentTag', {type: String, required: true});
     this.option('style', {type: String, required: false});
@@ -13,7 +13,7 @@ module.exports = yeoman.Base.extend({
     this.option('controller', {type: String, required: false});
   },
 
-  writing: function () {
+  writing: function() {
     this.log('Component writing');
     var writer = new WriteService(this);
 

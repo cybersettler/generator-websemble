@@ -5,14 +5,14 @@ function WriteService(generator) {
   var fs = generator.fs;
   var structure = generator.config.get('structure');
 
-  this.renderBaseCSS = function () {
+  this.renderBaseCSS = function() {
     var input = fs.read(generator.templatePath('_bootstrap.less'));
 
     less.render(
       input, {
         paths: [generator.destinationPath(structure.less), generator.destinationPath(structure.less + 'mixins')]  // Specify search paths for @import directives
       },
-      function (e, output) {
+      function(e, output) {
         if (e) {
           generator.log(chalk.red(e.name + ': ' + e.message));
           return;
