@@ -7,9 +7,9 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
   var componentName = generator.componentTag;
 
-  if (!generator.componentTag.includes("-")) {
-    generator.log(chalk.red("Component tag should contain at least one dash."));
-    throw new Error("Component tag should contain at least one dash.");
+  if (!generator.componentTag.includes('-')) {
+    generator.log(chalk.red('Component tag should contain at least one dash.'));
+    throw new Error('Component tag should contain at least one dash.');
   }
 
   generator.log(chalk.blue('Writing component ' + generator.componentTag));
@@ -24,18 +24,18 @@ function WriteService(generator) {
 
   if (/^view-/.test(generator.componentTag)) {
     createFunction = 'createViewComponent';
-  } else if (generator.componentTag === "core-app") {
+  } else if (generator.componentTag === 'core-app') {
     createFunction = 'createAppComponent';
   }
 
-  var html = generator.options.html ? fs.read(generator.options.html) : "";
-  var shadowHTML = generator.options.shadowHTML ? fs.read(generator.options.shadowHTML) : "";
+  var html = generator.options.html ? fs.read(generator.options.html) : '';
+  var shadowHTML = generator.options.shadowHTML ? fs.read(generator.options.shadowHTML) : '';
 
   var config = {
     componentTag: generator.componentTag,
     namespace: _.capitalize(namespace),
     componentName: componentName,
-    Facade: "websemble",
+    Facade: 'websemble',
     createFunction: createFunction,
     html: html,
     shadowHTML: shadowHTML
@@ -50,8 +50,8 @@ function WriteService(generator) {
   };
 
   this.copyControllerFile = function (customFile) {
-    var controllerFile = customFile || generator.templatePath("_controller.txt");
-    generator.log(chalk.blue("Copying controller file"));
+    var controllerFile = customFile || generator.templatePath('_controller.txt');
+    generator.log(chalk.blue('Copying controller file'));
 
     fs.copyTpl(
       controllerFile,
@@ -74,7 +74,7 @@ function WriteService(generator) {
     if (matches.length < 2) {
       return;
     }
-    var basename = matches[1] + "." + matches[2];
+    var basename = matches[1] + '.' + matches[2];
     fs.copy(
       stylePath,
       generator.destinationPath(path.join(componentPath, basename))

@@ -6,11 +6,11 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
 
   this.renderBaseCSS = function () {
-    var input = fs.read(generator.templatePath("_bootstrap.less"));
+    var input = fs.read(generator.templatePath('_bootstrap.less'));
 
     less.render(
       input, {
-        paths: [generator.destinationPath(structure.less), generator.destinationPath(structure.less + "mixins")]  // Specify search paths for @import directives
+        paths: [generator.destinationPath(structure.less), generator.destinationPath(structure.less + 'mixins')]  // Specify search paths for @import directives
       },
       function (e, output) {
         if (e) {
@@ -18,8 +18,8 @@ function WriteService(generator) {
           return;
         }
 
-        var destinationPath = generator.destinationPath(structure.frontend.assets + "css/base.css");
-        generator.log(chalk.gray("Writting CSS to file " + destinationPath));
+        var destinationPath = generator.destinationPath(structure.frontend.assets + 'css/base.css');
+        generator.log(chalk.gray('Writting CSS to file ' + destinationPath));
         fs.write(destinationPath, output.css);
       });
   };

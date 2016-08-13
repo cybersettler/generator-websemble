@@ -12,7 +12,7 @@ describe('generator-websemble:app', function () {
   before(function () {
     return helpers.run(path.join(__dirname, '../generators/app'))
       .withArguments([bootstrapConfig])
-      .withPrompts({name: "testApp"})
+      .withPrompts({name: 'testApp'})
       .withGenerators(deps)
       .toPromise();
   });

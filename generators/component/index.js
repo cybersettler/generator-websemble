@@ -14,7 +14,7 @@ module.exports = yeoman.Base.extend({
   },
 
   writing: function () {
-    this.log("Component writing");
+    this.log('Component writing');
     var writer = new WriteService(this);
 
     writer.copyControllerFile(this.options.controller);

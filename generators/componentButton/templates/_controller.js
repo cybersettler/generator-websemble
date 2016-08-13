@@ -12,7 +12,7 @@ function ButtonController(view, model) {
   };
 
   function bindViewRequestEvent(controller) {
-    view.addEventListener("click", function () {
+    view.addEventListener('click', function () {
       controller.dispatch(view.dataset);
     });
   }

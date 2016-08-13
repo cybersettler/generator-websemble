@@ -33,22 +33,22 @@ module.exports = yeoman.Base.extend({
       type: 'list',
       name: 'styleFramework',
       message: 'CSS style framework:',
-      choices: ["none", "Bootstrap"],
-      default: "Bootstrap"
+      choices: ['none', 'Bootstrap'],
+      default: 'Bootstrap'
     }];
 
     this.prompt(prompts, function (props) {
       this.props = props;
-      this.config.set("appname", props.name);
-      this.config.set("description", props.description);
-      this.config.set("styleFramework", AppConfig.styleOptions[props.styleFramework]);
-      this.config.set("structure", AppConfig.structure);
+      this.config.set('appname', props.name);
+      this.config.set('description', props.description);
+      this.config.set('styleFramework', AppConfig.styleOptions[props.styleFramework]);
+      this.config.set('structure', AppConfig.structure);
       done();
     }.bind(this));
   },
 
   appComponent: function () {
-    this.log(chalk.blue("Copying app component"));
+    this.log(chalk.blue('Copying app component'));
 
     var config = {
       args: ['core-app']
@@ -58,19 +58,19 @@ module.exports = yeoman.Base.extend({
   },
 
   writing: function () {
-    console.log("App writing");
+    console.log('App writing');
 
     var writer = new WriteService(this);
 
     writer.copyConfigurationFiles();
     writer.copyEntryPoint();
 
-    if (this.props.styleFramework !== "Bootstrap") {
-      this.log(chalk.gray("Bootstrap not enabled"));
+    if (this.props.styleFramework !== 'Bootstrap') {
+      this.log(chalk.gray('Bootstrap not enabled'));
       return;
     }
 
-    this.log(chalk.blue("Bootstrap enabled"));
+    this.log(chalk.blue('Bootstrap enabled'));
 
     writer.copyGlyphiconFiles();
     writer.generateVariablesLessFile();
