@@ -1,4 +1,4 @@
-const ipc = require('electron').ipcRenderer;
+var ipc = require('electron').ipcRenderer;
 
 module.exports = {
   menuConfig: [

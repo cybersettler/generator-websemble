@@ -1,4 +1,4 @@
-const Websemble = require('websemble');
+var Websemble = require('websemble');
 
 var app = new Websemble.backend.App();
 

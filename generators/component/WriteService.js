@@ -2,6 +2,11 @@ const chalk = require('chalk');
 const _ = require('lodash');
 const path = require('path');
 
+/**
+ * Write service
+ * @constructor
+ * @param {object} generator - Yeoman generator
+ */
 function WriteService(generator) {
   var fs = generator.fs;
   var structure = generator.config.get('structure');
@@ -19,7 +24,8 @@ function WriteService(generator) {
   });
 
   var namespace = match[1];
-  var componentPath = path.join(structure.component, namespace, '/', componentName, '/');
+  var componentPath = path.join(structure.component, namespace, '/',
+    componentName, '/');
   var createFunction = 'createUIComponent';
 
   if (/^view-/.test(generator.componentTag)) {
@@ -29,7 +35,8 @@ function WriteService(generator) {
   }
 
   var html = generator.options.html ? fs.read(generator.options.html) : '';
-  var shadowHTML = generator.options.shadowHTML ? fs.read(generator.options.shadowHTML) : '';
+  var shadowHTML = generator.options.shadowHTML ?
+    fs.read(generator.options.shadowHTML) : '';
 
   var config = {
     componentTag: generator.componentTag,
@@ -50,7 +57,8 @@ function WriteService(generator) {
   };
 
   this.copyControllerFile = function(customFile) {
-    var controllerFile = customFile || generator.templatePath('_controller.txt');
+    var controllerFile = customFile ||
+      generator.templatePath('_controller.txt');
     generator.log(chalk.blue('Copying controller file'));
 
     fs.copyTpl(
@@ -69,6 +77,11 @@ function WriteService(generator) {
     }
   };
 
+  /**
+   * Copies a file
+   * @private
+   * @param {string} stylePath - File path
+   */
   function copyStyleFile(stylePath) {
     var matches = /_(\w+)[.](css|sass|less)$/.exec(stylePath);
     if (matches.length < 2) {

@@ -1,13 +1,13 @@
 'use strict';
-const gulp = require('gulp');
-const del = require('del');
-const path = require('path');
-const install = require('gulp-install');
-const vinylPaths = require('vinyl-paths');
-const less = require('less');
-const map = require('map-stream');
-const ejs = require('ejs');
-const tap = require('gulp-tap');
+var gulp = require('gulp');
+var del = require('del');
+var path = require('path');
+var install = require('gulp-install');
+var vinylPaths = require('vinyl-paths');
+var less = require('less');
+var map = require('map-stream');
+var ejs = require('ejs');
+var tap = require('gulp-tap');
 
 gulp.task('clean', function() {
   return gulp.src('build/*')
@@ -19,33 +19,18 @@ gulp.task('copyMainBuildFiles', ['clean'], function() {
     .pipe(gulp.dest('build/'));
 });
 
-gulp.task('installDependencies', ['clean', 'copyMainBuildFiles', 'compileBaseStyle'], function() {
-  return gulp.src(['./build/bower.json', './build/package.json'])
-    .pipe(install());
-});
-
-/*
-function whenCompiledStyles(filePath){
-  return new Promise(function(resolve, reject) {
-    var result = {};
-    var basename = path.basename(filePath);
-    var glob = file.path.replace(basename, '*.less');
-    console.log("compiling",glob);
-    gulp.src(glob).pipe(tap(
-      function(styleFile) {
-        less.render(
-          styleFile.contents.toString(), {
-            paths:["src/main/less"]
-          }).then(function(style) {
-            console.log("Compiled style", style);
-            var key = path.basename(styleFile.path, '.less');
-            styles[key] = style.css;
-            callback(null);
-          });
-      }));
+gulp.task('installDependencies', ['clean', 'copyMainBuildFiles',
+  'compileBaseStyle'], function() {
+    return gulp.src(['./build/bower.json', './build/package.json'])
+      .pipe(install());
   });
-} */
 
+/**
+ * Compiles styles
+ * @private
+ * @param {object} file - Style file
+ * @param {function} cb - callback
+ */
 function compileStyles(file, cb) {
   console.log('Compilig styles', file.path);
   var styles = {};
@@ -80,16 +65,18 @@ function compileStyles(file, cb) {
     });
 }
 
-gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles', 'compileBaseStyle'], function() {
-  return gulp.src(['src/main/component/**/view.html'])
-    .pipe(map(compileStyles))
-    .pipe(gulp.dest('build/frontend/component'));
-});
+gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles',
+  'compileBaseStyle'], function() {
+    return gulp.src(['src/main/component/**/view.html'])
+      .pipe(map(compileStyles))
+      .pipe(gulp.dest('build/frontend/component'));
+  });
 
-gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles', 'compileBaseStyle'], function() {
-  return gulp.src(['src/main/component/**/*.js'])
-    .pipe(gulp.dest('build/frontend/component'));
-});
+gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
+  'compileBaseStyle'], function() {
+    return gulp.src(['src/main/component/**/*.js'])
+      .pipe(gulp.dest('build/frontend/component'));
+  });
 
 gulp.task('compileBaseStyle', ['copyMainBuildFiles'], function() {
   return gulp.src(['src/main/less/base.less'])
@@ -151,9 +138,10 @@ gulp.task('generateIndexFile', ['compileComponents'], function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('compileComponents', ['copyComponentViewFiles', 'copyControllerFiles']);
+gulp.task('compileComponents', ['copyComponentViewFiles',
+  'copyControllerFiles']);
 gulp.task('build', [
-  'clean', 'copyMainBuildFiles', 'compileBaseStyle', 'installDependencies',
-  'compileComponents', 'generateIndexFile'
+  'clean', 'copyMainBuildFiles', 'compileBaseStyle',
+  'installDependencies', 'compileComponents', 'generateIndexFile'
 ]);
 gulp.task('default', ['build']);

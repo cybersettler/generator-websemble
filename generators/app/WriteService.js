@@ -1,6 +1,12 @@
-const chalk = require('chalk');
-const path = require('path');
+'use strict';
+var chalk = require('chalk');
+var path = require('path');
 
+/**
+ * Write service
+ * @constructor
+ * @param {object} generator - yo generator
+ */
 function WriteService(generator) {
   var fs = generator.fs;
   var structure = generator.config.get('structure');
@@ -37,8 +43,10 @@ function WriteService(generator) {
 
     generator.log('app got config');
 
-    var template = generator.templatePath(path.join(structure.frontend.config, '_config.js'));
-    var destination = generator.destinationPath(path.join(structure.frontend.config, 'config.js'));
+    var template = generator.templatePath(
+      path.join(structure.frontend.config, '_config.js'));
+    var destination = generator.destinationPath(path.join(
+      structure.frontend.config, 'config.js'));
 
     generator.log('got template and destination');
 
@@ -66,11 +74,20 @@ function WriteService(generator) {
 
   this.copyGlyphiconFiles = function() {
     generator.log(chalk.blue('Copying icon files'));
-    var iconTemplatePath = generator.templatePath(structure.frontend.assets + 'fonts/_glyphicons-halflings-regular.');
-    var iconDestinationPath = generator.destinationPath(structure.frontend.assets + 'fonts/glyphicons-halflings-regular.');
+    var iconTemplatePath = generator.templatePath(
+      path.join(structure.frontend.assets,
+        'fonts/_glyphicons-halflings-regular.'));
+    var iconDestinationPath = generator.destinationPath(
+      path.join(structure.frontend.assets,
+        'fonts/glyphicons-halflings-regular.'));
 
     glyphiconsX.forEach(copyIconFile);
 
+    /**
+     * Copies icon file
+     * @private
+     * @param {string} ext - File extesion
+     */
     function copyIconFile(ext) {
       var template = iconTemplatePath + ext;
       var destination = iconDestinationPath + ext;
@@ -84,9 +101,12 @@ function WriteService(generator) {
 
     var filePath = generator.destinationPath(generator.bootstrapConfigFilePath);
     var bootstrapConfig = fs.readJSON(filePath);
-    var variablesLessFileContent = generateVariablesLessFileContent(bootstrapConfig);
-    var templateFilePath = generator.templatePath(structure.less + '_variables.less');
-    var destinationFilePath = generator.destinationPath(structure.less + 'variables.less');
+    var variablesLessFileContent = generateVariablesLessFileContent(
+      bootstrapConfig);
+    var templateFilePath = generator.templatePath(
+      path.join(structure.less, '_variables.less'));
+    var destinationFilePath = generator.destinationPath(
+      path.join(structure.less, 'variables.less'));
 
     generator.log(chalk.gray('Writing file ' + destinationFilePath));
 
@@ -104,13 +124,27 @@ function WriteService(generator) {
     copyStructureFiles(mixinsLessFiles, structure.less + 'mixins/', 'less');
   };
 
+  /**
+   * Copies files
+   * @private
+   * @param {Array} collection - A collection of filenames
+   * @param {string} path - The path of the files
+   * @param {string} ext - The extension of the files
+   */
   function copyStructureFiles(collection, path, ext) {
     collection.forEach(copyFile);
-    function copyFile(name) {
+    function copyFile(name) { // eslint-disable-line require-jsdoc
       copyStructureFile(name, path, ext);
     }
   }
 
+  /**
+   * Copies a file
+   * @private
+   * @param {string} name - File name
+   * @param {string} path - File path
+   * @param {string} ext - File extension
+   */
   function copyStructureFile(name, path, ext) {
     ext = ext || 'js';
     var filename = name + '.' + ext;
@@ -122,6 +156,12 @@ function WriteService(generator) {
   }
 }
 
+/**
+ * Generates less variables content
+ * @private
+ * @param {object} bootstrapConfig - Bootstrap configuration
+ * @return {string} file content
+ */
 function generateVariablesLessFileContent(bootstrapConfig) {
   var key;
   var value;

@@ -8,6 +8,8 @@ var deps = [
 var bootstrapConfig = path.join(__dirname,
     'bootstrapConfig.json');
 
+/* global describe, before, it */
+
 describe('generator-websemble:app', function() {
   before(function() {
     return helpers.run(path.join(__dirname, '../generators/app'))

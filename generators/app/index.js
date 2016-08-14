@@ -17,7 +17,8 @@ module.exports = yeoman.Base.extend({
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      'The ' + chalk.red('Matrix') + ' generator will help you set up your project.'
+      'The ' + chalk.red('Matrix') +
+        ' generator will help you set up your project.'
     ));
 
     var prompts = [{
@@ -41,7 +42,8 @@ module.exports = yeoman.Base.extend({
       this.props = props;
       this.config.set('appname', props.name);
       this.config.set('description', props.description);
-      this.config.set('styleFramework', AppConfig.styleOptions[props.styleFramework]);
+      this.config.set('styleFramework',
+        AppConfig.styleOptions[props.styleFramework]);
       this.config.set('structure', AppConfig.structure);
       done();
     }.bind(this));

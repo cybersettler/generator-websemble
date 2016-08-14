@@ -1,6 +1,11 @@
 var less = require('less');
 var chalk = require('chalk');
 
+/**
+ * Write service
+ * @constructor
+ * @param {object} generator - yo generator
+ */
 function WriteService(generator) {
   var fs = generator.fs;
   var structure = generator.config.get('structure');
@@ -10,7 +15,11 @@ function WriteService(generator) {
 
     less.render(
       input, {
-        paths: [generator.destinationPath(structure.less), generator.destinationPath(structure.less + 'mixins')]  // Specify search paths for @import directives
+        // Specify search paths for @import directives
+        paths: [
+          generator.destinationPath(structure.less),
+          generator.destinationPath(structure.less + 'mixins')
+        ]
       },
       function(e, output) {
         if (e) {
@@ -18,7 +27,8 @@ function WriteService(generator) {
           return;
         }
 
-        var destinationPath = generator.destinationPath(structure.frontend.assets + 'css/base.css');
+        var destinationPath = generator.destinationPath(
+          structure.frontend.assets + 'css/base.css');
         generator.log(chalk.gray('Writting CSS to file ' + destinationPath));
         fs.write(destinationPath, output.css);
       });

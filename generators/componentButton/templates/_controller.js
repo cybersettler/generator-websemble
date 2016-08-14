@@ -1,3 +1,9 @@
+/**
+ * Controller of the button widget
+ * @constructor
+ * @param {object} view - HTML element
+ * @param {object} model - Model to keep state data
+ */
 function ButtonController(view, model) {
   this.super(view, model);
 
@@ -11,6 +17,11 @@ function ButtonController(view, model) {
     }
   };
 
+  /**
+   * Binds the request event
+   * @private
+   * @param {object} controller - The controller
+   */
   function bindViewRequestEvent(controller) {
     view.addEventListener('click', function() {
       controller.dispatch(view.dataset);

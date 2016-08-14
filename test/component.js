@@ -11,8 +11,11 @@ var localConfig = {
   structure: AppConfig.structure
 };
 
+/* global describe, before, it */
+
 describe('generator-websemble:component', function() {
-  var sourcePath = path.join(__dirname, '../generators/componentButton/templates/');
+  var sourcePath = path.join(__dirname,
+    '../generators/componentButton/templates/');
   before(function() {
     return helpers.run(path.join(__dirname, '../generators/component'))
       .withArguments(['ui-button'])
