@@ -17,7 +17,7 @@ module.exports = yeoman.Base.extend({
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      'The ' + chalk.red('Matrix') +
+      'The ' + chalk.red('Websemble') +
         ' generator will help you set up your project.'
     ));
 
