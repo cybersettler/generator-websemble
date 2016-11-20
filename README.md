@@ -10,11 +10,39 @@ npm install -g yo
 npm install -g generator-websemble
 ```
 
-Then generate your new project:
+## Getting started
+
+First, create your project folder and cd into it.
 
 ```bash
-yo websemble
+mkdir MyProject
+cd MyProject
 ```
+
+Websemble is meant to work with [Bootstrap](http://getbootstrap.com/), in the future other frameworks. [Create your Bootstrap configuration](http://getbootstrap.com/customize/) and give the generated configuration file
+as argument to Websemble. Inside you project directory do the following:
+
+```bash
+yo websemble ../path/to/bootstrap/config.json
+```
+
+You will be prompted to give your new application details. Choose Bootstrap as
+your framework. One the generator is done, execute the following:
+
+```bash
+gulp
+```
+
+This will compile your application creating a build directory. One this is
+done, execute the following:
+
+```bash
+cd build
+npm start
+```
+
+You should see your application running with Electron. To learn more about
+Websemble you can visit the [Github repository wiki](https://github.com/cybersettler/websemble/wiki).
 
 ## Getting To Know Yeoman
 

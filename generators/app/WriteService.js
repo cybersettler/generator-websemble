@@ -12,7 +12,7 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
 
   var mainLessFiles = [
-    'alerts', 'badges', 'breadcrumbs', 'button-groups', 'buttons', 'carousel',
+    'alerts', 'badges', "base", 'breadcrumbs', 'button-groups', 'buttons', 'carousel',
     'close', 'code', 'dropdowns', 'forms', 'glyphicons', 'grid', 'input-groups',
     'jumbotron', 'labels', 'list-group', 'media', 'modals', 'navbar', 'navs',
     'normalize', 'pager', 'pagination', 'panels', 'popovers', 'print',

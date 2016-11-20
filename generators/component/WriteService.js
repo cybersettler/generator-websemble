@@ -34,9 +34,9 @@ function WriteService(generator) {
     createFunction = 'createAppComponent';
   }
 
-  var html = generator.options.html ? fs.read(generator.options.html) : '';
+  var html = generator.options.html ? generator.options.html : '';
   var shadowHTML = generator.options.shadowHTML ?
-    fs.read(generator.options.shadowHTML) : '';
+    generator.options.shadowHTML : '';
 
   var config = {
     componentTag: generator.componentTag,

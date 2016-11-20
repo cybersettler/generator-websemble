@@ -52,11 +52,22 @@ module.exports = yeoman.Base.extend({
   appComponent: function() {
     this.log(chalk.blue('Copying app component'));
 
-    var config = {
-      args: ['core-app']
+    var appConfig = {
+      args: ['core-app'],
+      options: {
+        html:'<content></content>'
+      }
     };
 
-    this.composeWith('websemble:component', config);
+    var indexConfig = {
+      args: ['view-index'],
+      options: {
+        html:'<h1>Index</h1>'
+      }
+    };
+
+    this.composeWith('websemble:component', appConfig);
+    this.composeWith('websemble:component', indexConfig);
   },
 
   writing: function() {
