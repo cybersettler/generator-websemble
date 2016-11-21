@@ -12,12 +12,13 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
 
   var mainLessFiles = [
-    'alerts', 'badges', "base", 'breadcrumbs', 'button-groups', 'buttons', 'carousel',
-    'close', 'code', 'dropdowns', 'forms', 'glyphicons', 'grid', 'input-groups',
-    'jumbotron', 'labels', 'list-group', 'media', 'modals', 'navbar', 'navs',
-    'normalize', 'pager', 'pagination', 'panels', 'popovers', 'print',
-    'progress-bars', 'responsive-embed', 'responsive-utilities', 'scaffolding',
-    'tables', 'thumbnails', 'tooltip', 'type', 'utilities', 'wells'
+    'alerts', 'badges', 'base', 'breadcrumbs', 'button-groups', 'buttons',
+    'carousel', 'close', 'code', 'dropdowns', 'forms', 'glyphicons', 'grid',
+    'input-groups', 'jumbotron', 'labels', 'list-group', 'media', 'modals',
+    'navbar', 'navs', 'normalize', 'pager', 'pagination', 'panels', 'popovers',
+    'print', 'progress-bars', 'responsive-embed', 'responsive-utilities',
+    'scaffolding', 'tables', 'thumbnails', 'tooltip', 'type', 'utilities',
+    'wells'
   ];
 
   var mixinsLessFiles = [

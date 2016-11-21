@@ -55,14 +55,14 @@ module.exports = yeoman.Base.extend({
     var appConfig = {
       args: ['core-app'],
       options: {
-        html:'<content></content>'
+        html: '<content></content>'
       }
     };
 
     var indexConfig = {
       args: ['view-index'],
       options: {
-        html:'<h1>Index</h1>'
+        html: '<h1>Index</h1>'
       }
     };
 
