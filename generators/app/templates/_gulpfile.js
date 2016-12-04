@@ -8,6 +8,7 @@ var less = require('less');
 var map = require('map-stream');
 var ejs = require('ejs');
 var tap = require('gulp-tap');
+var shell = require('gulp-shell');
 
 gulp.task('clean', function() {
   return gulp.src('build/*')
@@ -19,10 +20,28 @@ gulp.task('copyMainBuildFiles', ['clean'], function() {
     .pipe(gulp.dest('build/'));
 });
 
-gulp.task('installDependencies', ['clean', 'copyMainBuildFiles',
+gulp.task('installMainDependencies', ['clean', 'copyMainBuildFiles',
   'compileBaseStyle'], function() {
-    return gulp.src(['./build/bower.json', './build/package.json'])
+    return gulp.src([
+      './bower.json', './build/bower.json', './build/package.json'])
       .pipe(install());
+  });
+
+gulp.task('installComponentDependencies', ['installMainDependencies'],
+  function() {
+    return gulp.src(['./bower_components/*/npm/package.json'])
+      .pipe(shell([
+        'npm install <%= f(file) %>'
+      ], {
+        cwd: './build',
+        templateData: {
+          f: function(file, base) {
+            var p = /^.*\/bower_components\/(.*)\/package[.]json/
+              .exec(file.path)[1];
+            return file.base + p;
+          }
+        }
+      }));
   });
 
 /**
@@ -32,21 +51,29 @@ gulp.task('installDependencies', ['clean', 'copyMainBuildFiles',
  * @param {function} cb - callback
  */
 function compileStyles(file, cb) {
-  console.log('Compilig styles', file.path);
+  console.log('Compiling styles', file.path);
   var styles = {};
   var allCompillations = [];
-  var basename = path.basename(file.path);
+  var basename = path.basename(file.path); // basename = view.html
   var glob = file.path.replace(basename, '*.less');
+  var lessPaths = ['src/main/less'];
+  if (file.path.match(/bower_components/)) {
+    let p = /^.*\/(bower_components\/.*)\/component/
+      .exec(file.base)[1] + '/resources/less';
+    lessPaths.push(p);
+  }
   console.log('compiling', glob);
   gulp.src(glob).pipe(tap(
     function(styleFile) {
       var process = less.render(
         styleFile.contents.toString(), {
-          paths: ['src/main/less']
+          paths: lessPaths
         }).then(function(style) {
           console.log('Compiled style', styleFile.path);
           var key = path.basename(styleFile.path, '.less');
           styles[key] = style.css;
+        }, function(error) {
+          console.log('Something went wrong trying to compile style', error);
         });
       allCompillations.push(process);
     }))
@@ -61,20 +88,34 @@ function compileStyles(file, cb) {
         cb(null, file);
       }, function(err) {
         throw new Error(err);
+      }).catch(function(error) {
+        console.log('Something went wrong trying to write view file', error);
       });
     });
 }
 
+function fixComponentBasePath(file, cb) { // eslint-disable-line require-jsdoc
+  if (file.path.match(/bower_components/)) {
+    var componentName = /(\w+)\/component/.exec(file.path)[1];
+    file.base += componentName + '/component/';
+  }
+  cb(null, file);
+}
+
 gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles',
   'compileBaseStyle'], function() {
-    return gulp.src(['src/main/component/**/view.html'])
+    return gulp.src(['src/main/component/**/view.html',
+      'bower_components/*/component/**/view.html'])
+      .pipe(map(fixComponentBasePath))
       .pipe(map(compileStyles))
       .pipe(gulp.dest('build/frontend/component'));
   });
 
 gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
   'compileBaseStyle'], function() {
-    return gulp.src(['src/main/component/**/*.js'])
+    return gulp.src(['src/main/component/**/*.js',
+      'bower_components/*/component/**/*.js'])
+      .pipe(map(fixComponentBasePath))
       .pipe(gulp.dest('build/frontend/component'));
   });
 
@@ -138,10 +179,13 @@ gulp.task('generateIndexFile', ['compileComponents'], function() {
     .pipe(gulp.dest('build'));
 });
 
+gulp.task('installDependencies', ['installMainDependencies',
+  'installComponentDependencies']);
 gulp.task('compileComponents', ['copyComponentViewFiles',
   'copyControllerFiles']);
 gulp.task('build', [
   'clean', 'copyMainBuildFiles', 'compileBaseStyle',
-  'installDependencies', 'compileComponents', 'generateIndexFile'
+  'installDependencies',
+  'compileComponents', 'generateIndexFile'
 ]);
 gulp.task('default', ['build']);
