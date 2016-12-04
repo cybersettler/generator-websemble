@@ -58,7 +58,7 @@ function compileStyles(file, cb) {
   var glob = file.path.replace(basename, '*.less');
   var lessPaths = ['src/main/less'];
   if (file.path.match(/bower_components/)) {
-    let p = /^.*\/(bower_components\/.*)\/component/
+    var p = /^.*\/(bower_components\/.*)\/component/
       .exec(file.base)[1] + '/resources/less';
     lessPaths.push(p);
   }
