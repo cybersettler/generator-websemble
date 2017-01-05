@@ -103,16 +103,16 @@ function fixComponentBasePath(file, cb) { // eslint-disable-line require-jsdoc
 }
 
 gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles',
-  'compileBaseStyle'], function() {
-    return gulp.src(['src/main/component/**/view.html',
-      'bower_components/*/component/**/view.html'])
+  'compileBaseStyle', 'installDependencies'], function() {
+    return gulp.src(['src/main/component/**/View.html',
+      'bower_components/*/component/**/View.html'])
       .pipe(map(fixComponentBasePath))
       .pipe(map(compileStyles))
       .pipe(gulp.dest('build/frontend/component'));
   });
 
 gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
-  'compileBaseStyle'], function() {
+  'compileBaseStyle', 'installDependencies'], function() {
     return gulp.src(['src/main/component/**/*.js',
       'bower_components/*/component/**/*.js'])
       .pipe(map(fixComponentBasePath))
@@ -143,6 +143,7 @@ gulp.task('generateIndexFile', ['compileComponents'], function() {
   var viewFiles = [];
   var styleFiles = [];
   return gulp.src([
+    'build/frontend/component/core/App/*.html',
     'build/frontend/component/**/*.html',
     'build/frontend/assets/css/*.css',
     'src/main/template/index.html'

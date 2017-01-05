@@ -55,7 +55,7 @@ module.exports = yeoman.Base.extend({
     var appConfig = {
       args: ['core-app'],
       options: {
-        html: '<content></content>'
+        html: '<view-index></view-index>'
       }
     };
 

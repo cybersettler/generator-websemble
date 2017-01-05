@@ -26,13 +26,6 @@ function WriteService(generator) {
   var namespace = match[1];
   var componentPath = path.join(structure.component, namespace, '/',
     componentName, '/');
-  var createFunction = 'createUIComponent';
-
-  if (/^view-/.test(generator.componentTag)) {
-    createFunction = 'createViewComponent';
-  } else if (generator.componentTag === 'core-app') {
-    createFunction = 'createAppComponent';
-  }
 
   var html = generator.options.html ? generator.options.html : '';
   var shadowHTML = generator.options.shadowHTML ?
@@ -43,7 +36,6 @@ function WriteService(generator) {
     namespace: _.capitalize(namespace),
     componentName: componentName,
     Facade: 'websemble',
-    createFunction: createFunction,
     html: html,
     shadowHTML: shadowHTML
   };
@@ -51,7 +43,7 @@ function WriteService(generator) {
   this.copyViewFile = function() {
     fs.copyTpl(
       generator.templatePath('_view.html'),
-      generator.destinationPath(path.join(componentPath, 'view.html')),
+      generator.destinationPath(path.join(componentPath, 'View.html')),
       config
     );
   };
@@ -63,7 +55,7 @@ function WriteService(generator) {
 
     fs.copyTpl(
       controllerFile,
-      generator.destinationPath(path.join(componentPath, 'controller.js')),
+      generator.destinationPath(path.join(componentPath, 'Controller.js')),
       {componentName: componentName}
     );
   };
