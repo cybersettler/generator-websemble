@@ -31,8 +31,8 @@ describe('generator-websemble:component', function() {
   it('creates files', function() {
     console.log('current dir', __dirname);
     assert.file([
-      'src/main/component/ui/Button/controller.js',
-      'src/main/component/ui/Button/view.html',
+      'src/main/component/ui/Button/Controller.js',
+      'src/main/component/ui/Button/View.html',
       'src/main/component/ui/Button/style.less'
     ]);
   });
