@@ -99,9 +99,11 @@ function WriteService(generator) {
 
   this.copyBootstrapConfigFile = function() {
     generator.log(chalk.blue('Copying less variables file'));
-    var sourceFilePath = generator.templatePath(structure.bootstrapConfig + '_config.json');
+    var sourceFilePath = generator.templatePath(
+      structure.bootstrapConfig + '_config.json');
     if (generator.bootstrapConfigFilePath) {
-      sourceFilePath = generator.destinationPath(generator.bootstrapConfigFilePath);
+      sourceFilePath = generator.destinationPath(
+        generator.bootstrapConfigFilePath);
     }
 
     var destinationFilePath = generator.destinationPath(

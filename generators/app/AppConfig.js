@@ -1,5 +1,5 @@
 const mainFolder = 'src/main/';
-const resourceFolder = 'src/main/resources/'
+const resourceFolder = 'src/main/resources/';
 const testFolder = 'src/test/';
 const path = require('path');
 const frontendFolder = path.join(mainFolder, 'webapp/frontend', '/');
