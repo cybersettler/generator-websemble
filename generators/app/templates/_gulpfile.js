@@ -9,9 +9,10 @@ var map = require('map-stream');
 var ejs = require('ejs');
 var tap = require('gulp-tap');
 var shell = require('gulp-shell');
+var Vinyl = require('vinyl');
 
 gulp.task('clean', function() {
-  return gulp.src('build/*')
+  return gulp.src(['build/*','./src/main/less/variables.less'])
     .pipe(vinylPaths(del));
 });
 
@@ -21,9 +22,8 @@ gulp.task('copyMainBuildFiles', ['clean'], function() {
 });
 
 gulp.task('installMainDependencies', ['clean', 'copyMainBuildFiles',
-  'compileBaseStyle'], function() {
-    return gulp.src([
-      './bower.json', './build/bower.json', './build/package.json'])
+'generateVariablesLessFile', 'compileBaseStyle'], function() {
+    return gulp.src(['./bower.json', './build/bower.json', './build/package.json'])
       .pipe(install());
   });
 
@@ -119,7 +119,8 @@ gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
       .pipe(gulp.dest('build/frontend/component'));
   });
 
-gulp.task('compileBaseStyle', ['copyMainBuildFiles'], function() {
+gulp.task('compileBaseStyle', ['copyMainBuildFiles',
+  'generateVariablesLessFile'], function() {
   return gulp.src(['src/main/less/base.less'])
     .pipe(map(function(file, cb) {
       less.render(
@@ -138,6 +139,50 @@ gulp.task('compileBaseStyle', ['copyMainBuildFiles'], function() {
     }))
     .pipe(gulp.dest('build/frontend/assets/css'));
 });
+
+gulp.task('generateVariablesLessFile', ['clean'], function() {
+  console.log('Copying less variables file');
+  gulp.src('src/main/resources/bootstrap/config.json')
+  .pipe(map(function(file, cb) {
+    var bootstrapConfig = JSON.parse(file.contents.toString());
+    var variablesLessFileContent = generateVariablesLessFileContent(
+        bootstrapConfig);
+    var lessFile = new Vinyl({
+      cwd: '/',
+      base: '/src/main/less/',
+      path: '/src/main/less/variables.less',
+      contents: new Buffer(variablesLessFileContent)
+    });
+    console.log('Writing variables.less file');
+    cb(null, lessFile);
+  }))
+  .pipe(gulp.dest('./src/main/less/'));;
+});
+
+/**
+ * Generates less variables content
+ * @private
+ * @param {object} bootstrapConfig - Bootstrap configuration
+ * @return {string} file content
+ */
+function generateVariablesLessFileContent(bootstrapConfig) {
+  var key;
+  var value;
+  var line;
+  var content = [];
+  for (key in bootstrapConfig.vars) {
+    if (!{}.hasOwnProperty.call(bootstrapConfig.vars, key)) {
+      continue;
+    }
+    value = bootstrapConfig.vars[key];
+    if (/["]/.test(value)) {
+      value = value.replace(/"/g, '\"'); // eslint-disable-line no-useless-escape
+    }
+    line = key + ': ' + value + ';';
+    content.push(line);
+  }
+  return content.join('\n');
+}
 
 gulp.task('generateIndexFile', ['compileComponents'], function() {
   var viewFiles = [];
@@ -185,8 +230,8 @@ gulp.task('installDependencies', ['installMainDependencies',
 gulp.task('compileComponents', ['copyComponentViewFiles',
   'copyControllerFiles']);
 gulp.task('build', [
-  'clean', 'copyMainBuildFiles', 'compileBaseStyle',
-  'installDependencies',
+  'clean', 'copyMainBuildFiles', 'generateVariablesLessFile',
+  'compileBaseStyle', 'installDependencies',
   'compileComponents', 'generateIndexFile'
 ]);
 gulp.task('default', ['build']);

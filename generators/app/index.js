@@ -85,8 +85,8 @@ module.exports = yeoman.Base.extend({
 
     this.log(chalk.blue('Bootstrap enabled'));
 
+    writer.copyBootstrapConfigFile();
     writer.copyGlyphiconFiles();
-    writer.generateVariablesLessFile();
     writer.copyLessFiles();
   },
 

@@ -97,24 +97,21 @@ function WriteService(generator) {
     }
   };
 
-  this.generateVariablesLessFile = function() {
+  this.copyBootstrapConfigFile = function() {
     generator.log(chalk.blue('Copying less variables file'));
+    var sourceFilePath = generator.templatePath(structure.bootstrapConfig + '_config.json');
+    if (generator.bootstrapConfigFilePath) {
+      sourceFilePath = generator.destinationPath(generator.bootstrapConfigFilePath);
+    }
 
-    var filePath = generator.destinationPath(generator.bootstrapConfigFilePath);
-    var bootstrapConfig = fs.readJSON(filePath);
-    var variablesLessFileContent = generateVariablesLessFileContent(
-      bootstrapConfig);
-    var templateFilePath = generator.templatePath(
-      path.join(structure.less, '_variables.less'));
     var destinationFilePath = generator.destinationPath(
-      path.join(structure.less, 'variables.less'));
+      path.join(structure.bootstrapConfig, 'config.json'));
 
     generator.log(chalk.gray('Writing file ' + destinationFilePath));
 
-    fs.copyTpl(
-      templateFilePath,
-      destinationFilePath,
-      {content: variablesLessFileContent}
+    fs.copy(
+      sourceFilePath,
+      destinationFilePath
     );
   };
 
@@ -155,31 +152,6 @@ function WriteService(generator) {
       generator.destinationPath(path + filename)
     );
   }
-}
-
-/**
- * Generates less variables content
- * @private
- * @param {object} bootstrapConfig - Bootstrap configuration
- * @return {string} file content
- */
-function generateVariablesLessFileContent(bootstrapConfig) {
-  var key;
-  var value;
-  var line;
-  var content = [];
-  for (key in bootstrapConfig.vars) {
-    if (!{}.hasOwnProperty.call(bootstrapConfig.vars, key)) {
-      continue;
-    }
-    value = bootstrapConfig.vars[key];
-    if (/["]/.test(value)) {
-      value = value.replace(/"/g, '\"'); // eslint-disable-line no-useless-escape
-    }
-    line = key + ': ' + value + ';';
-    content.push(line);
-  }
-  return content.join('\n');
 }
 
 module.exports = WriteService;
