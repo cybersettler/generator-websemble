@@ -38,7 +38,7 @@ module.exports = class extends Generator {
       default: 'Bootstrap'
     }];
 
-    return this.prompt(prompts).then((answers) => {
+    return this.prompt(prompts).then(answers => {
       this.props = answers;
       this.config.set('appname', answers.name);
       this.config.set('description', answers.description);
@@ -63,28 +63,6 @@ module.exports = class extends Generator {
     this.composeWith(require.resolve('../component'), appConfig);
     this.composeWith(require.resolve('../component'), indexConfig);
   }
-
-  /*
-  appComponent() {
-    this.log(chalk.blue('Copying app component'));
-
-    var appConfig = {
-      args: ['core-app'],
-      options: {
-        html: '<view-index></view-index>'
-      }
-    };
-
-    var indexConfig = {
-      args: ['view-index'],
-      options: {
-        html: '<h1>Index</h1>'
-      }
-    };
-
-    this.composeWith('websemble:component', appConfig);
-    this.composeWith('websemble:component', indexConfig);
-  }*/
 
   writing() {
     console.log('App writing');

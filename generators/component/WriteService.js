@@ -17,7 +17,8 @@ function WriteService(generator) {
     throw new Error('Component tag should contain at least one dash.');
   }
 
-  generator.log(chalk.blue('Writing component ' + generator.options.componentTag));
+  generator.log(chalk.blue('Writing component ' +
+    generator.options.componentTag));
   var match = /^(\w+)[-](.*)/.exec(generator.options.componentTag);
   componentName = _.camelCase(match[2]).replace(/^(.)/, function(m, p) {
     return p.toUpperCase();
