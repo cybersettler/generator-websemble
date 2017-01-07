@@ -15,7 +15,7 @@ var localConfig = {
 
 describe('generator-websemble:component', function() {
   var sourcePath = path.join(__dirname,
-    '../generators/componentButton/templates/');
+    './resources/componentButton/');
   before(function() {
     return helpers.run(path.join(__dirname, '../generators/component'))
       .withArguments(['ui-button'])
@@ -24,8 +24,7 @@ describe('generator-websemble:component', function() {
         shadowStyle: path.join(sourcePath, '_style.less'),
         shadowHTML: path.join(sourcePath, '_shadowContent.html')
       })
-      .withLocalConfig(localConfig)
-      .toPromise();
+      .withLocalConfig(localConfig);
   });
 
   it('creates files', function() {

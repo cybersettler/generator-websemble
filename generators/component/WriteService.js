@@ -10,15 +10,15 @@ const path = require('path');
 function WriteService(generator) {
   var fs = generator.fs;
   var structure = generator.config.get('structure');
-  var componentName = generator.componentTag;
+  var componentName = generator.options.componentTag;
 
-  if (!generator.componentTag.includes('-')) {
+  if (!generator.options.componentTag.includes('-')) {
     generator.log(chalk.red('Component tag should contain at least one dash.'));
     throw new Error('Component tag should contain at least one dash.');
   }
 
-  generator.log(chalk.blue('Writing component ' + generator.componentTag));
-  var match = /^(\w+)[-](.*)/.exec(generator.componentTag);
+  generator.log(chalk.blue('Writing component ' + generator.options.componentTag));
+  var match = /^(\w+)[-](.*)/.exec(generator.options.componentTag);
   componentName = _.camelCase(match[2]).replace(/^(.)/, function(m, p) {
     return p.toUpperCase();
   });
@@ -32,7 +32,7 @@ function WriteService(generator) {
     generator.options.shadowHTML : '';
 
   var config = {
-    componentTag: generator.componentTag,
+    componentTag: generator.options.componentTag,
     namespace: _.capitalize(namespace),
     componentName: componentName,
     Facade: 'websemble',

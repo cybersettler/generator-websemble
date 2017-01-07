@@ -1,18 +1,18 @@
 'use strict';
-var yeoman = require('yeoman-generator');
+var Generator = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var AppConfig = require('./AppConfig.js');
 var WriteService = require('./WriteService.js');
 
-module.exports = yeoman.Base.extend({
+module.exports = class extends Generator {
 
-  constructor: function() {
-    yeoman.Base.apply(this, arguments);
+  constructor(args, opts) {
+    super(args, opts);
     this.argument('bootstrapConfigFilePath', {type: String, required: false});
-  },
+  }
 
-  prompting: function() {
+  prompting() {
     var done = this.async();
 
     // Have Yeoman greet the user.
@@ -38,18 +38,34 @@ module.exports = yeoman.Base.extend({
       default: 'Bootstrap'
     }];
 
-    this.prompt(prompts, function(props) {
-      this.props = props;
-      this.config.set('appname', props.name);
-      this.config.set('description', props.description);
+    return this.prompt(prompts).then((answers) => {
+      this.props = answers;
+      this.config.set('appname', answers.name);
+      this.config.set('description', answers.description);
       this.config.set('styleFramework',
-        AppConfig.styleOptions[props.styleFramework]);
+        AppConfig.styleOptions[answers.styleFramework]);
       this.config.set('structure', AppConfig.structure);
       done();
-    }.bind(this));
-  },
+    });
+  }
 
-  appComponent: function() {
+  initializing() {
+    var appConfig = {
+      arguments: ['core-app'],
+      html: '<view-index></view-index>'
+    };
+
+    var indexConfig = {
+      arguments: ['view-index'],
+      html: '<h1>Index</h1>'
+    };
+
+    this.composeWith(require.resolve('../component'), appConfig);
+    this.composeWith(require.resolve('../component'), indexConfig);
+  }
+
+  /*
+  appComponent() {
     this.log(chalk.blue('Copying app component'));
 
     var appConfig = {
@@ -68,9 +84,9 @@ module.exports = yeoman.Base.extend({
 
     this.composeWith('websemble:component', appConfig);
     this.composeWith('websemble:component', indexConfig);
-  },
+  }*/
 
-  writing: function() {
+  writing() {
     console.log('App writing');
 
     var writer = new WriteService(this);
@@ -88,9 +104,9 @@ module.exports = yeoman.Base.extend({
     writer.copyBootstrapConfigFile();
     writer.copyGlyphiconFiles();
     writer.copyLessFiles();
-  },
+  }
 
-  install: function() {
+  install() {
     this.installDependencies();
   }
-});
+};

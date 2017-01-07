@@ -1,19 +1,19 @@
 'use strict';
-const yeoman = require('yeoman-generator');
+const Generator = require('yeoman-generator');
 const WriteService = require('./WriteService.js');
 
-module.exports = yeoman.Base.extend({
-  constructor: function() {
-    yeoman.Base.apply(this, arguments);
+module.exports = class extends Generator{
+  constructor(args, opts) {
+    super(args, opts);
     this.argument('componentTag', {type: String, required: true});
     this.option('style', {type: String, required: false});
     this.option('html', {type: String, required: false});
     this.option('shadowStyle', {type: String, required: false});
     this.option('shadowHTML', {type: String, required: false});
     this.option('controller', {type: String, required: false});
-  },
+  }
 
-  writing: function() {
+  writing() {
     this.log('Component writing');
     var writer = new WriteService(this);
 
@@ -21,4 +21,4 @@ module.exports = yeoman.Base.extend({
     writer.copyViewFile();
     writer.copyStyleFiles();
   }
-});
+};
