@@ -7,11 +7,11 @@
         "start": "./node_modules/.bin/electron ."
     },
     "dependencies": {
-      "electron": "1.4.x",
+      "electron-prebuilt": "^1.4.13",
       "lodash": "^4.6.1",
       "shortid": "^2.2.2",
       "tv4": "^1.1.12",
-      "websemble":"^2.0.2"
+      "websemble":"^3.0.0"
     },
     "devDependencies": {
       "gulp": "^3.9.1"

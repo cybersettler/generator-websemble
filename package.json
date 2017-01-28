@@ -13,6 +13,7 @@
   ],
   "main": "generators/index.js",
   "keywords": [
+    "websemble",
     "electron",
     "webcomponents",
     "html5",
