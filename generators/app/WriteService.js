@@ -45,9 +45,9 @@ function WriteService(generator) {
     generator.log('app got config');
 
     var template = generator.templatePath(
-      path.join(structure.frontend.config, '_config.js'));
+      path.join(structure.frontend.root, '_config.js'));
     var destination = generator.destinationPath(path.join(
-      structure.frontend.config, 'config.js'));
+      structure.frontend.root, 'config.js'));
 
     generator.log('got template and destination');
 
@@ -65,6 +65,9 @@ function WriteService(generator) {
       generator.destinationPath(path.join(structure.webapp, 'package.json')),
       config
     );
+
+    fs.copy(generator.templatePath(path.join(structure.backend.root, '_config.js')),
+    generator.destinationPath(path.join(structure.backend.root, 'config.js')));
   };
 
   this.copyEntryPoint = function() {
