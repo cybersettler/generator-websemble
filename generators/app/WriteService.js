@@ -100,6 +100,12 @@ function WriteService(generator) {
     }
   };
 
+  this.copyLocaleFile = function() {
+    generator.log(chalk.blue('Copying locale file'));
+    var localePath = path.join(structure.frontend.assets, 'locales', 'en', '/');
+    copyStructureFile('translation', localePath, 'json');
+  };
+
   this.copyBootstrapConfigFile = function() {
     generator.log(chalk.blue('Copying less variables file'));
     var sourceFilePath = generator.templatePath(

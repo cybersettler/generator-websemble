@@ -81,6 +81,7 @@ module.exports = class extends Generator {
 
     writer.copyBootstrapConfigFile();
     writer.copyGlyphiconFiles();
+    writer.copyLocaleFile();
     writer.copyLessFiles();
   }
 

@@ -7,5 +7,8 @@ module.exports = {
         collectionName: "demo"
       }
     ]
+  },
+  resources: {
+    i18n: "frontend/assets/locales"
   }
 };
