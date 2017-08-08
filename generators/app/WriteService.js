@@ -66,8 +66,14 @@ function WriteService(generator) {
       config
     );
 
-    fs.copy(generator.templatePath(path.join(structure.backend.root, '_config.js')),
-    generator.destinationPath(path.join(structure.backend.root, 'config.js')));
+    fs.copy(
+      generator.templatePath(
+        path.join(structure.backend.root, '_config.js')
+      ),
+      generator.destinationPath(
+        path.join(structure.backend.root, 'config.js')
+      )
+    );
   };
 
   this.copyEntryPoint = function() {

@@ -12,7 +12,7 @@ var shell = require('gulp-shell');
 var Vinyl = require('vinyl');
 
 gulp.task('clean', function() {
-  return gulp.src(['build/*','./src/main/less/variables.less'])
+  return gulp.src(['build/*', './src/main/less/variables.less'])
     .pipe(vinylPaths(del));
 });
 
@@ -22,8 +22,9 @@ gulp.task('copyMainBuildFiles', ['clean'], function() {
 });
 
 gulp.task('installMainDependencies', ['clean', 'copyMainBuildFiles',
-'generateVariablesLessFile', 'compileBaseStyle'], function() {
-    return gulp.src(['./bower.json', './build/bower.json', './build/package.json'])
+  'generateVariablesLessFile', 'compileBaseStyle'], function() {
+    return gulp.src([
+      './bower.json', './build/bower.json', './build/package.json'])
       .pipe(install());
   });
 
@@ -59,7 +60,7 @@ function compileStyles(file, cb) {
   var lessPaths = ['src/main/less'];
   if (file.path.match(/bower_components/)) {
     var p = /^.*\/(bower_components\/.*)\/component/
-      .exec(file.base)[1] + '/resources/less';
+        .exec(file.base)[1] + '/resources/less';
     lessPaths.push(p);
   }
   console.log('compiling', glob);
@@ -121,42 +122,42 @@ gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
 
 gulp.task('compileBaseStyle', ['copyMainBuildFiles',
   'generateVariablesLessFile'], function() {
-  return gulp.src(['src/main/less/base.less'])
-    .pipe(map(function(file, cb) {
-      less.render(
-        file.contents.toString(), {
-          paths: ['src/main/less']
-        }).then(function(style) {
-          console.log('Compiled style', file.path);
-          file.contents = new Buffer(style.css);
-          file.path = file.path.replace('.less', '.css');
-          cb(null, file);
-        }, function(err) {
-          throw new Error(err);
-        }).catch(function(err) {
-          throw new Error('catch', err);
-        });
-    }))
-    .pipe(gulp.dest('build/frontend/assets/css'));
-});
+    return gulp.src(['src/main/less/base.less'])
+      .pipe(map(function(file, cb) {
+        less.render(
+          file.contents.toString(), {
+            paths: ['src/main/less']
+          }).then(function(style) {
+            console.log('Compiled style', file.path);
+            file.contents = new Buffer(style.css);
+            file.path = file.path.replace('.less', '.css');
+            cb(null, file);
+          }, function(err) {
+            throw new Error(err);
+          }).catch(function(err) {
+            throw new Error('catch', err);
+          });
+      }))
+      .pipe(gulp.dest('build/frontend/assets/css'));
+  });
 
 gulp.task('generateVariablesLessFile', ['clean'], function() {
   console.log('Copying less variables file');
   gulp.src('src/main/resources/bootstrap/config.json')
-  .pipe(map(function(file, cb) {
-    var bootstrapConfig = JSON.parse(file.contents.toString());
-    var variablesLessFileContent = generateVariablesLessFileContent(
+    .pipe(map(function(file, cb) {
+      var bootstrapConfig = JSON.parse(file.contents.toString());
+      var variablesLessFileContent = generateVariablesLessFileContent(
         bootstrapConfig);
-    var lessFile = new Vinyl({
-      cwd: '/',
-      base: '/src/main/less/',
-      path: '/src/main/less/variables.less',
-      contents: new Buffer(variablesLessFileContent)
-    });
-    console.log('Writing variables.less file');
-    cb(null, lessFile);
-  }))
-  .pipe(gulp.dest('./src/main/less/'));;
+      var lessFile = new Vinyl({
+        cwd: '/',
+        base: '/src/main/less/',
+        path: '/src/main/less/variables.less',
+        contents: new Buffer(variablesLessFileContent)
+      });
+      console.log('Writing variables.less file');
+      cb(null, lessFile);
+    }))
+    .pipe(gulp.dest('./src/main/less/'));
 });
 
 /**

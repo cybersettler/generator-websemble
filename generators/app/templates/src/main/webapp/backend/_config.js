@@ -4,11 +4,11 @@ module.exports = {
       {
         // supported attributes include NeDB options object
         // see https://github.com/louischatriot/nedb#creatingloading-a-database
-        collectionName: "demo"
+        collectionName: 'demo'
       }
     ]
   },
   resources: {
-    i18n: "frontend/assets/locales"
+    i18n: 'frontend/assets/locales'
   }
 };
