@@ -12,21 +12,17 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
 
   var mainLessFiles = [
-    'alerts', 'badges', 'base', 'breadcrumbs', 'button-groups', 'buttons',
-    'carousel', 'close', 'code', 'dropdowns', 'forms', 'glyphicons', 'grid',
-    'input-groups', 'jumbotron', 'labels', 'list-group', 'media', 'modals',
-    'navbar', 'navs', 'normalize', 'pager', 'pagination', 'panels', 'popovers',
-    'print', 'progress-bars', 'responsive-embed', 'responsive-utilities',
-    'scaffolding', 'tables', 'thumbnails', 'tooltip', 'type', 'utilities',
-    'wells'
+    'base', 'glyphicons', 'grid',
+    'normalize', 'print', 'responsive-utilities',
+    'scaffolding', 'type', 'utilities'
   ];
 
   var mixinsLessFiles = [
-    'alerts', 'background-variant', 'border-radius', 'buttons', 'center-block',
-    'clearfix', 'forms', 'gradients', 'grid-framework', 'grid', 'hide-text',
-    'image', 'labels', 'list-group', 'nav-vertical-align', 'opacity',
-    'pagination', 'panels', 'progress-bar', 'reset-filter', 'reset-text',
-    'resize', 'responsive-visibility', 'size', 'tab-focus', 'table-row',
+    'background-variant', 'border-radius', 'center-block',
+    'clearfix', 'gradients', 'grid-framework', 'grid', 'hide-text',
+    'image', 'labels', 'nav-vertical-align', 'opacity',
+    'reset-filter', 'reset-text',
+    'resize', 'responsive-visibility', 'size', 'tab-focus',
     'text-emphasis', 'text-overflow', 'vendor-prefixes'
   ];
 
