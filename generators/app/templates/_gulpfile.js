@@ -217,7 +217,6 @@ gulp.task('generateIndexFile', ['compileComponents'], function() {
             components: viewFiles,
             styles: styleFiles
           });
-        console.log('rendering content with template', contents);
         file.contents = new Buffer(contents);
         cb(null, file);
       }

@@ -14,7 +14,7 @@ function WriteService(generator) {
   var mainLessFiles = [
     'base', 'glyphicons', 'grid',
     'normalize', 'print', 'responsive-utilities',
-    'scaffolding', 'type', 'utilities'
+    'scaffolding', 'type', 'utilities', 'component-animations'
   ];
 
   var mixinsLessFiles = [
