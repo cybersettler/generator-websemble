@@ -1,0 +1,14 @@
+<template class="shadow">
+  <style><%%- shadowStyle %%></style>
+  <%- shadowHTML %>
+</template>
+<template class="main">
+  <style><%%- style %%></style>
+  <%- html %>
+</template>
+
+<script>
+    (function(window, document, undefined) {
+      require( "websemble" ).frontend.createComponent( '<%= componentTag %>' );
+    })(window, document);
+</script>
