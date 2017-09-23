@@ -15,7 +15,8 @@ function WriteService(generator) {
     throw new Error('Component tag should contain at least one dash.');
   }
 
-  generator.log(chalk.blue('Generating component ' + generator.options.componentTag));
+  generator.log(chalk.blue('Generating component ' +
+    generator.options.componentTag));
   const match = /^(\w+)[-](.*)/.exec(generator.options.componentTag);
 
   const componentName = _.camelCase(match[2]).replace(/^(.)/, function(m, p) {
@@ -41,7 +42,6 @@ function WriteService(generator) {
 }
 
 WriteService.prototype.copyViewFile = function() {
-
   const generator = this.generator;
   const config = this.config;
   var destPath = path.join(config.componentPath, 'View.html');
@@ -56,7 +56,6 @@ WriteService.prototype.copyViewFile = function() {
 };
 
 WriteService.prototype.copyControllerFile = function() {
-
   const generator = this.generator;
   const config = this.config;
   var source = generator.templatePath('_controller.txt');
@@ -72,7 +71,6 @@ WriteService.prototype.copyControllerFile = function() {
 };
 
 WriteService.prototype.copyStyleFiles = function() {
-
   const generator = this.generator;
   const config = this.config;
   var source = generator.templatePath('_mixin.less');
