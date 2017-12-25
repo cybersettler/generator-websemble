@@ -22,7 +22,7 @@ gulp.task('copyMainBuildFiles', ['clean'], function() {
 });
 
 gulp.task('installMainDependencies', ['clean', 'copyMainBuildFiles',
-  'generateVariablesLessFile', 'compileBaseStyle'], function() {
+    'generateVariablesLessFile', 'compileBaseStyle', 'compileMainStyle'], function () {
     return gulp.src([
       './bower.json', './build/bower.json', './build/package.json'])
       .pipe(install());
@@ -103,8 +103,19 @@ function fixComponentBasePath(file, cb) { // eslint-disable-line require-jsdoc
   cb(null, file);
 }
 
+function addZindexVariables(config) {
+    config.vars['@zindex-navbar'] = 1000;
+    config.vars['@zindex-dropdown'] = 1000;
+    config.vars['@zindex-popover'] = 1060;
+    config.vars['@zindex-tooltip'] = 1070;
+    config.vars['@zindex-navbar-fixed'] = 1030;
+    config.vars['@zindex-modal-background'] = 1040;
+    config.vars['@zindex-modal'] = 1050;
+}
+
 gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles',
-  'compileBaseStyle', 'installDependencies'], function() {
+    'compileBaseStyle','compileMainStyle',
+    'installDependencies'], function () {
     return gulp.src(['src/main/component/**/View.html',
       'bower_components/*/component/**/View.html'])
       .pipe(map(fixComponentBasePath))
@@ -113,7 +124,8 @@ gulp.task('copyComponentViewFiles', ['clean', 'copyMainBuildFiles',
   });
 
 gulp.task('copyControllerFiles', ['clean', 'copyMainBuildFiles',
-  'compileBaseStyle', 'installDependencies'], function() {
+    'compileBaseStyle','compileMainStyle',
+    'installDependencies'], function () {
     return gulp.src(['src/main/component/**/*.js',
       'bower_components/*/component/**/*.js'])
       .pipe(map(fixComponentBasePath))
@@ -141,23 +153,48 @@ gulp.task('compileBaseStyle', ['copyMainBuildFiles',
       .pipe(gulp.dest('build/frontend/assets/css'));
   });
 
-gulp.task('generateVariablesLessFile', ['clean'], function() {
-  console.log('Copying less variables file');
-  gulp.src('src/main/resources/bootstrap/config.json')
-    .pipe(map(function(file, cb) {
-      var bootstrapConfig = JSON.parse(file.contents.toString());
-      var variablesLessFileContent = generateVariablesLessFileContent(
-        bootstrapConfig);
-      var lessFile = new Vinyl({
-        cwd: '/',
-        base: '/src/main/less/',
-        path: '/src/main/less/variables.less',
-        contents: new Buffer(variablesLessFileContent)
-      });
-      console.log('Writing variables.less file');
-      cb(null, lessFile);
-    }))
-    .pipe(gulp.dest('./src/main/less/'));
+gulp.task('compileMainStyle', [
+    'copyMainBuildFiles',
+    'generateVariablesLessFile',
+    'compileBaseStyle'], function () {
+    return gulp.src(['src/main/less/main.less'])
+        .pipe(map(function (file, cb) {
+            less.render(
+                file.contents.toString(), {
+                    paths: ['src/main/less']
+                }).then(function (style) {
+                console.log('Compiled style', file.path);
+                file.contents = new Buffer(style.css);
+                file.path = file.path.replace('.less', '.css');
+                cb(null, file);
+            }, function (err) {
+                    console.log(err);
+                throw new Error(err);
+            }).catch(function (err) {
+                throw new Error('catch', err);
+            });
+        }))
+        .pipe(gulp.dest('build/frontend/assets/css'));
+});
+
+gulp.task('generateVariablesLessFile', ['clean'], function () {
+    console.log('Copying less variables file');
+    gulp.src('src/main/resources/bootstrap/config.json')
+        .pipe(map(function (file, cb) {
+            var bootstrapConfig = JSON.parse(file.contents.toString());
+            addZindexVariables(bootstrapConfig);
+            var variablesLessFileContent = generateVariablesLessFileContent(
+                bootstrapConfig);
+            var lessFile = new Vinyl({
+                cwd: '/',
+                base: '/src/main/less/',
+                path: '/src/main/less/variables.less',
+                contents: new Buffer(variablesLessFileContent)
+            });
+            console.log('Writing variables.less file');
+            cb(null, lessFile);
+        }))
+        .pipe(gulp.dest('./src/main/less/'));
 });
 
 /**
@@ -230,8 +267,9 @@ gulp.task('installDependencies', ['installMainDependencies',
 gulp.task('compileComponents', ['copyComponentViewFiles',
   'copyControllerFiles']);
 gulp.task('build', [
-  'clean', 'copyMainBuildFiles', 'generateVariablesLessFile',
-  'compileBaseStyle', 'installDependencies',
-  'compileComponents', 'generateIndexFile'
+    'clean', 'copyMainBuildFiles', 'generateVariablesLessFile',
+    'compileBaseStyle', 'compileMainStyle',
+    'compileMainStyle', 'installDependencies',
+    'compileComponents', 'generateIndexFile'
 ]);
 gulp.task('default', ['build']);

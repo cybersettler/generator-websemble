@@ -12,9 +12,10 @@ function WriteService(generator) {
   var structure = generator.config.get('structure');
 
   var mainLessFiles = [
-    'base', 'glyphicons', 'grid',
+    'base', 'main', 'glyphicons', 'grid',
     'normalize', 'print', 'responsive-utilities',
-    'scaffolding', 'type', 'utilities', 'component-animations'
+    'scaffolding', 'type', 'utilities', 'component-animations',
+    'buttons', 'close'
   ];
 
   var mixinsLessFiles = [
@@ -23,7 +24,7 @@ function WriteService(generator) {
     'image', 'labels', 'nav-vertical-align', 'opacity',
     'reset-filter', 'reset-text',
     'resize', 'responsive-visibility', 'size', 'tab-focus',
-    'text-emphasis', 'text-overflow', 'vendor-prefixes'
+    'text-emphasis', 'text-overflow', 'vendor-prefixes', 'buttons'
   ];
 
   var glyphiconsX = [
