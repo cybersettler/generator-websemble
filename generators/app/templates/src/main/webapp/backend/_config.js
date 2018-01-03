@@ -9,6 +9,6 @@ module.exports = {
     ]
   },
   resources: {
-    i18n: 'frontend/assets/locales'
+    i18n: 'messageBundle'
   }
 };
