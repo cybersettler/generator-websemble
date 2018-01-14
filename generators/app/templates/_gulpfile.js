@@ -98,7 +98,8 @@ function compileStyles(file, cb) {
 
 function fixComponentBasePath(file, cb) { // eslint-disable-line require-jsdoc
   if (file.path.match(/bower_components/)) {
-    var componentName = /(\w+)\/component/.exec(file.path)[1];
+    var unixPath = file.path.split(path.sep).join('/');
+    var componentName = /(\w+)\/component/.exec(unixPath)[1];
     file.base += componentName + '/component/';
   }
   cb(null, file);
@@ -237,13 +238,14 @@ gulp.task('generateIndexFile', ['compileComponents'], function() {
       var htmlRegex = /[.]html$/;
       var frontendFileRegex = /^.*\/(frontend\/.*)/;
       var frontendPathRegex = /^.*\/frontend\/.*/;
+      var unixPath = p.split(path.sep).join('/');
 
-      if (cssRegex.test(p)) {
-        var stylePath = frontendFileRegex.exec(p)[1];
+      if (cssRegex.test(unixPath)) {
+        var stylePath = frontendFileRegex.exec(unixPath)[1];
         styleFiles.push(stylePath);
-      } else if (htmlRegex.test(p) && frontendPathRegex.test(p)) {
+      } else if (htmlRegex.test(unixPath) && frontendPathRegex.test(unixPath)) {
         console.log('storing path:', p);
-        var viewPath = frontendFileRegex.exec(p)[1];
+        var viewPath = frontendFileRegex.exec(unixPath)[1];
         viewFiles.push(viewPath);
       }
       return Promise.resolve();
